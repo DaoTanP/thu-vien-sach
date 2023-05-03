@@ -1,0 +1,219 @@
+<header class="p-2 bg-light text-black shadow sticky-top">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-xl-start">
+            <a routerLink="/" class="d-flex align-items-center mb-2 mb-xl-0 text-decoration-none">
+                <i class="bi bi-bootstrap-fill fs-3"></i>
+            </a>
+
+            <ul class="nav col-12 col-xl-auto mb-2 justify-content-center mb-md-0">
+                <li><a routerLink="/home" class="nav-link px-2 text-black">Trang chủ</a></li>
+                <li><a href="#" class="nav-link px-2 text-secondary">Tìm sách</a></li>
+                <li><a href="#" class="nav-link px-2 text-secondary">E-book</a></li>
+            </ul>
+
+            <form class="col-12 col-xl-5 mb-3 mb-xl-0 m-xl-auto">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Tìm tên sách" aria-describedby="quick-search">
+                    <button class="btn btn-outline-primary" type="button" id="quick-search">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                <!-- <input type="search" class="form-control" placeholder="Search..." aria-label="Search"> -->
+            </form>
+
+            <div class="text-end w-sm-100">
+                <button *ngIf="switchThemeFunction != undefined"
+                    class="btn btn-dark text-light rounded-circle py-2 me-sm-2" (click)="toggleTheme()"><i
+                        class="bi bi-moon-fill"></i></button>
+                <a routerLink="/login" class="btn btn-outline-dark me-sm-2 d-block d-sm-inline-block mb-2 mb-sm-0">Đăng
+                    nhập</a>
+                <a routerLink="/register" class="btn btn-primary d-block d-sm-inline-block">Đăng ký</a>
+                <div class="flex-shrink-0 dropdown d-inline-block ms-2 d-none">
+                    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle L-Affiliate-Tagged"
+                        id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                        <li><a class="dropdown-item L-Affiliate-Tagged" href="#">New project...</a></li>
+                        <li><a class="dropdown-item L-Affiliate-Tagged" href="#">Settings</a></li>
+                        <li><a class="dropdown-item L-Affiliate-Tagged" href="#">Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item L-Affiliate-Tagged" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<router-outlet></router-outlet>
+
+<footer class="bg-dark bg-opacity-10 pt-5 pb-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-4 mb-4">
+                <img src="https://placehold.it/250x80" alt="" class="img-fluid">
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laudantium, rem.</p>
+            </div>
+            <div class="col-12 col-lg-4 mb-4">
+                <div class="row mb-2">
+                    <div class="col-auto col-lg-2 me-lg-2">
+                        <button class="btn btn-outline-dark rounded-circle py-2"><i
+                                class="bi bi-geo-alt-fill"></i></button>
+                    </div>
+                    <div class="col m-auto">
+                        <small>170 An Dương Vương, Tp. Quy Nhơn</small>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-auto col-lg-2 me-lg-2">
+                        <button class="btn btn-outline-dark rounded-circle py-2"><i
+                                class="bi bi-telephone-fill"></i></button>
+                    </div>
+                    <div class="col m-auto">
+                        <small>(84-256) 3846156</small>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-auto col-lg-2 me-lg-2">
+                        <button class="btn btn-outline-dark rounded-circle py-2"><i
+                                class="bi bi-envelope-fill"></i></button>
+                    </div>
+                    <div class="col m-auto">
+                        <small>dqn@moet.edu.vn</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 mb-4">
+                <div class="row">
+                    <h4>Giới thiệu</h4>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor cum voluptatibus
+                        laboriosam provident
+                        voluptatum doloribus!</p>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <a href="http://qnu.edu.vn/" class="btn btn-outline-dark rounded-3 py-2">
+                            <i class="bi bi-globe"></i></a>
+                    </div>
+                    <div class="col-2">
+                        <a href="https://www.facebook.com/dhquynhon" class="btn btn-outline-dark rounded-3 py-2">
+                            <i class="bi bi-facebook"></i></a>
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- <footer class="bg-dark bg-opacity-10 pt-5 pb-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-sm-12">
+                <img src="http://placehold.it/250x80" alt="" class="img-fluid">
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laudantium, rem.</p>
+                <ul class="list-unstyled">
+                    <li>
+                        <i class="icon-earphones"></i> Call Us:
+                        <a href="tel:344-755-111">344-755-111</a>
+                    </li>
+                    <li>
+                        <i class="icon-envelope-open"></i>
+                        <a href="mailto:support@aazztech.com">support@aazztech.com</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-sm-4">
+                <h4 class="mb-4">Popular Topics</h4>
+                <ul class="d-flex flex-column gap-2 list-unstyled">
+                    <li>
+                        <a href="#">Wordpress</a>
+                    </li>
+                    <li>
+                        <a href="#">Plugins</a>
+                    </li>
+                    <li>
+                        <a href="#">Joomla Template</a>
+                    </li>
+                    <li>
+                        <a href="#">Admin Template</a>
+                    </li>
+                    <li>
+                        <a href="#">HTML Template</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-sm-4">
+                <h4 class="mb-4">Our Company</h4>
+                <ul class="d-flex flex-column gap-2 list-unstyled">
+                    <li>
+                        <a href="#">About Us</a>
+                    </li>
+                    <li>
+                        <a href="#">How It Works</a>
+                    </li>
+                    <li>
+                        <a href="#">Affiliates</a>
+                    </li>
+                    <li>
+                        <a href="#">Testimonials</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact Us</a>
+                    </li>
+                    <li>
+                        <a href="#">Plan &amp; Pricing</a>
+                    </li>
+                    <li>
+                        <a href="#">Blog</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-sm-4">
+                <h4 class="mb-4">Help Support</h4>
+                <ul class="d-flex flex-column gap-2 list-unstyled">
+                    <li>
+                        <a href="#">Support Forum</a>
+                    </li>
+                    <li>
+                        <a href="#">Terms &amp; Conditions</a>
+                    </li>
+                    <li>
+                        <a href="#">Support Policy</a>
+                    </li>
+                    <li>
+                        <a href="#">Refund Policy</a>
+                    </li>
+                    <li>
+                        <a href="#">FAQs</a>
+                    </li>
+                    <li>
+                        <a href="#">Buyers Faq</a>
+                    </li>
+                    <li>
+                        <a href="#">Sellers Faq</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright-text">
+                    <p>© 2018
+                        <a href="#">Library</a>. All rights reserved. Created by
+                        <a href="#">Tan</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer> -->
