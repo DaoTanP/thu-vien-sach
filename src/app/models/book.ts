@@ -7,5 +7,6 @@ export class Book
         public author: string = 'Author Name',
         public publisher: string = 'Publisher Name',
         public publishDate: string = '1/1/2017',
+        public description: string = 'Book description',
     ) { }
 }
