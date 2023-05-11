@@ -17,6 +17,19 @@ export class AppComponent
   }
   switchTheme ()
   {
-    document.body.classList.toggle("theme-dark");
+    let html = document.querySelector("html");
+    if (!html)
+      return;
+
+    if (html.dataset['bsTheme'] == "light")
+    {
+      html.dataset['bsTheme'] = "dark";
+      return true;
+    }
+    else
+    {
+      html.dataset['bsTheme'] = "light";
+      return false;
+    }
   }
 }

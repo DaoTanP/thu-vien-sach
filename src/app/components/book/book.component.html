@@ -1,7 +1,10 @@
-<div class="card p-0 border-0 bg-body text-body" style="width: 12rem;">
-    <div class="rounded-2"><img src="{{book.imgUrl}}" class="card-img-top img-fluid rounded-2" alt="..."></div>
+<!-- style="width: 12rem;" -->
+<div class="card p-0 border-0 bg-body text-body link w-sm-100 w-auto mx-1" routerLink="{{href}}">
+    <div class="rounded-2"><img src="{{book.imgUrl}}" class="card-img-top img-fluid rounded-2" alt="..." loading="lazy">
+    </div>
     <div class="card-body p-2">
-        <p class="small card-text text-wrapped max-line-2 my-1">{{book.title}}</p>
-        <a routerLink="{{href}}" class="stretched-link">{{hrefTitle}}</a>
+        <p class="card-text text-wrapped max-line-2 my-1">{{book.title}}</p>
+        <p class="small text-muted card-text text-wrapped max-line-2 my-1">{{book.author}}</p>
+        <!-- <a routerLink="{{href}}" class="stretched-link">Details -></a> -->
     </div>
 </div>

@@ -12,7 +12,7 @@
 <div class="container mb-5">
     <div class="row">
         <div class="col-md-4 mb-4">
-            <div class="img-container mx-xl-5 mx-5 mx-sm-0">
+            <div class="img-container me-xl-5 me-auto">
                 <img class="img-fluid w-100" src="{{book?.imgUrl}}" alt="">
             </div>
         </div>
@@ -44,22 +44,5 @@
     <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illum dolores saepe hic, ab ullam officiis aut deleniti
         similique suscipit aliquid architecto, quod quo repellendus odio? Provident sint quasi magni minima?</p>
 </div>
-<div class="container mb-5">
-    <div class="row mb-4">
-        <h4 class="mb-0">Cùng tác giả</h4>
-    </div>
-    <div class="container p-0 d-flex flex-nowrap overflow-auto gap-3">
-
-        <app-book title="Bramble" imgUrl="">
-        </app-book>
-        <app-book title="Watch Dogs: Legion Standard Edition"
-            imgUrl="https://cdn1.epicgames.com/0a84818055e740a7be21a2e5b6162703/offer/WatchDogs_Legion_Store_Portrait_1200x1600-1200x1600-a6b2d4cce489aeeb87bad4a6db168bed.jpg?h=480&quality=medium&resize=1&w=360">
-        </app-book>
-        <app-book title="Poker Club"
-            imgUrl="https://cdn1.epicgames.com/spt-assets/560813614bba464385b56f43524d17f0/download-poker-club-offer-16wlj.jpg?h=480&quality=medium&resize=1&w=360">
-        </app-book>
-        <app-book title="The Legend of Heroes: Trails from Zero"
-            imgUrl="https://cdn1.epicgames.com/salesEvent/salesEvent/EGS_TheLegendofHeroesTrailsfromZero_NihonFalcom_S2_1200x1600-0abec058d85e9be2dedbcb10937bb3a7?h=480&quality=medium&resize=1&w=360">
-        </app-book>
-    </div>
-</div>
+<app-book-scroll-list title="Cùng tác giả"></app-book-scroll-list>
+<app-book-scroll-list title="Có liên quan"></app-book-scroll-list>

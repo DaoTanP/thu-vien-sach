@@ -9,15 +9,16 @@ import { DataService } from 'src/app/services/data.service';
 export class MainLayoutComponent
 {
   protected switchThemeFunction: any = undefined;
+  protected isDark: boolean = false;
   constructor(private dataService: DataService)
   {
     this.switchThemeFunction = this.dataService.getData('themeSwitch');
-    console.log(this.dataService.getData('themeSwitch'));
   }
 
   toggleTheme ()
   {
     if (this.switchThemeFunction)
-      this.switchThemeFunction();
+      this.isDark = this.switchThemeFunction();
+
   }
 }

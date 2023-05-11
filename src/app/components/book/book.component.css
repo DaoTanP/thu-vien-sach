@@ -1,4 +1,4 @@
-.card:has(.stretched-link:hover) :has(img)::after {
+:is(.card:has(.stretched-link:hover), .card.link:hover) :has(img)::after {
     content: '';
     position: absolute;
     top: 0;
@@ -7,7 +7,7 @@
     left: 0;
     background-color: rgba(255, 255, 255, 0.15);
 }
-.card:has(.stretched-link:hover) img {
+:is(.card:has(.stretched-link:hover), .card.link:hover) img {
     transform: scale(1.025);
 }
 .card img {
@@ -19,11 +19,11 @@
 .card :has(img) {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 3/4;
-    @supports not (aspect-ratio: 3 / 4) {
+    aspect-ratio: 2/3;
+    @supports not (aspect-ratio: 2 / 3) {
         &::before {
             float: left;
-            padding-top: 133.33%;
+            padding-top: 150%;
             content: "";
         }
 
@@ -34,6 +34,7 @@
         }
     }
 }
-.card {
+:is(.card:has(.stretched-link), .card.link) {
     overflow: hidden;
+    cursor: pointer;
 }
