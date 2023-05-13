@@ -12,6 +12,12 @@ export class HttpService
 
   constructor(private httpClient: HttpClient) { }
 
+  public register(username: string, email: string, password: string) {
+    const url = `${this.USER_API_URL}/register`;
+    const data = { username, email, password };
+    return this.httpClient.post(url, data);
+  }
+
   public authenticate (username: string, password: string): Observable<any>
   {
     return this.httpClient.post(this.USER_API_URL, { username, password }, { observe: 'response', responseType: "text" });

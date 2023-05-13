@@ -1,1 +1,50 @@
-<p>register works!</p>
+<div class="d-grid col-11 col-sm-6 col-md-5 col-lg-4 col-xxl-3 mx-auto">
+  <div class="card shadow mt-4">
+    <div class="container mt-3">
+      <div class="card-body">
+        <form [formGroup]="registerForm" (ngSubmit)="register()">
+          <h4 class="card-title mb-4">Đăng ký</h4>
+          <div class="form-group">
+            <div class="mb-2 w-100">
+              <label for="username">Tên đăng nhập</label>
+              <input type="text" class="form-control" id="username" formControlName="username" placeholder="Nhập tên đăng nhập">
+              <small *ngIf="username.invalid && (username.dirty || username.touched)" class="text-danger">
+                <span *ngIf="username.errors?.['required']">Tên đăng nhập không được bỏ trống.</span>
+                <span *ngIf="username.errors?.['minlength']">Tên đăng nhập ít nhất {{ username.errors?.['minlength'].requiredLength }} kí tự.</span>
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="mb-2 w-100">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" formControlName="email" placeholder="Nhập email">
+              <small *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+                <span *ngIf="email.errors?.['required']">Email không được để trống.</span>
+                <span *ngIf="email.errors?.['email']">Nhập Email phải hợp lệ.</span>
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Mật khẩu</label>
+            <input type="password" class="form-control" id="password" formControlName="password" placeholder="Nhập mật khẩu">
+            <small *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
+              <span *ngIf="password.errors?.['required']">Mật khẩu không được để trống.</span>
+              <span *ngIf="password.errors?.['minlength']">Mật khẩu ít nhất {{ password.errors?.['minlength'].requiredLength }} kí tự.</span>
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Xác nhận mật khẩu</label>
+            <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" placeholder="Nhập lại mật khẩu">
+            <!-- <small *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="text-danger">
+              <span *ngIf="confirmPassword.errors?.['required']">Confirm password is required.</span>
+              <span *ngIf="confirmPassword.errors?.['mustMatch']">Passwords must match.</span>
+            </small> -->
+          </div>
+          <hr>
+          <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid" class="btn btn-primary d-block w-100 rounded-pill py-2">Đăng ký</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
