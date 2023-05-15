@@ -3,6 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
@@ -13,9 +16,9 @@ import { MainLayoutComponent } from './components/layouts/main-layout/main-layou
 import { HomeComponent } from './components/home/home.component';
 import { BookComponent } from './components/book/book.component';
 import { BookScrollListComponent } from './components/book-scroll-list/book-scroll-list.component';
-
-import { SlickCarouselModule } from 'ngx-slick-carousel';
+import BookGridComponent from './components/book-grid/book-grid.component';
 import { BookSearchComponent } from './components/book-search/book-search.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -28,14 +31,17 @@ import { BookSearchComponent } from './components/book-search/book-search.compon
     HomeComponent,
     BookComponent,
     BookScrollListComponent,
-    BookSearchComponent
+    BookSearchComponent,
+    BookGridComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    SlickCarouselModule
+    SlickCarouselModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

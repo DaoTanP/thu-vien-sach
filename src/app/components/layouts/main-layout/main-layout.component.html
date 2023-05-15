@@ -1,4 +1,4 @@
-<header class="p-2 bg-body-tertiary shadow sticky-top">
+<!-- <header class="p-2 bg-body-tertiary shadow sticky-top">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-xl-start">
             <a routerLink="/" class="d-flex align-items-center mb-2 mb-xl-0 text-decoration-none">
@@ -21,7 +21,6 @@
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
-                <!-- <input type="search" class="form-control" placeholder="Search..." aria-label="Search"> -->
             </form>
 
             <div class="text-end w-sm-100">
@@ -55,7 +54,159 @@
             </div>
         </div>
     </div>
-</header>
+</header> -->
+
+<nav class="navbar navbar-expand-lg p-2 bg-body-tertiary shadow sticky-top">
+    <div class="container d-flex">
+        <button class="navbar-toggler d-flex d-lg-none p-2" data-bs-toggle="offcanvas" data-bs-target="#navbar"
+            aria-controls="bdNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <button class="navbar-toggler d-flex d-lg-none p-2 order-3" data-bs-toggle="offcanvas" data-bs-target="#navbar"
+            aria-controls="bdNavbar">
+            <span class="bi bi-search" style="font-size: 30px;"></span>
+        </button>
+        <a routerLink="/" class="d-block align-items-center text-decoration-none m-auto">
+            <i class="bi bi-bootstrap-fill fs-3"></i>
+        </a>
+        <div class="offcanvas-lg offcanvas-start flex-grow-1" tabindex="-1" id="navbar"
+            aria-labelledby="NavbarOffcanvas" data-bs-scroll="true">
+            <div class="offcanvas-header px-4 pb-0">
+                <h5 class="offcanvas-title">Bootstrap</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
+                    data-bs-target="#navbar"></button>
+            </div>
+            <div class="offcanvas-body p-4 pt-0 p-lg-0">
+                <hr class="d-lg-none text-white-50">
+                <ul class="navbar-nav flex-row flex-wrap">
+                    <li class="nav-item col-6 col-lg-auto">
+                        <a routerLink="/home" class="nav-link py-2 px-0 px-lg-2 active">Trang chủ</a>
+                    </li>
+                    <li class="nav-item col-6 col-lg-auto">
+                        <a routerLink="/search" class="nav-link py-2 px-0 px-lg-2">Tìm sách</a>
+                    </li>
+                    <li class="nav-item col-6 col-lg-auto">
+                        <a href="#" class="nav-link py-2 px-0 px-lg-2">E-book</a>
+                    </li>
+                </ul>
+
+                <form class="flex-grow-1 mx-0 mx-lg-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-2" placeholder="Tìm tên sách"
+                            aria-describedby="quick-search">
+                        <button class="btn btn-primary" type="button" id="quick-search">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <hr class="d-lg-none">
+
+                <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
+                    <li class="nav-item dropdown col-6 col-lg-auto">
+                        <button *ngIf="switchThemeFunction != undefined"
+                            class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
+                            id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown"
+                            data-bs-display="static" aria-label="Toggle theme">
+                            <span *ngIf="isDark" class="bi bi-moon-stars-fill"></span>
+                            <span *ngIf="!isDark" class="bi bi-sun-fill"></span>
+                            <span class="d-lg-none ms-2" id="bd-theme-text">Màu nền</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center"
+                                    [class.active]="!isDark" attr.aria-pressed="{{!isDark}}"
+                                    (click)="setTheme('light')">
+                                    <span class="bi bi-sun-fill me-2 opacity-50"></span>
+                                    Sáng
+                                    <span class="bi bi-check2 ms-auto d-none"></span>
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center"
+                                    [class.active]="isDark" data-bs-theme-value="dark" attr.aria-pressed="{{isDark}}"
+                                    (click)="setTheme('dark')">
+                                    <span class="bi bi-moon-stars-fill me-2 opacity-50"></span>
+                                    Tối
+                                    <span class="bi bi-check2 ms-auto d-none"></span>
+                                </button>
+                            </li>
+                            <!-- <li>
+                                                    <button type="button" class="dropdown-item d-flex align-items-center"
+                                                        data-bs-theme-value="auto" aria-pressed="false">
+                                                        <span class="bi bi-circle-half me-2 opacity-50"></span>
+                                                        Auto
+                                                        <span class="bi bi-check2 ms-auto d-none"></span>
+                                                    </button>
+                                                </li> -->
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown col-6 col-lg-auto">
+                        <button type="button" class="nav-link py-2 px-0 px-lg-2" aria-expanded="false"
+                            data-bs-toggle="dropdown" data-bs-display="static" aria-label="Message">
+                            <span class="bi bi-bell-fill"></span>
+                            <span class="d-lg-none ms-2">Thông báo</span>
+                        </button>
+                    </li>
+
+                    <li class="nav-item py-1 col-12 col-lg-auto">
+                        <div class="vr d-none d-lg-flex mx-lg-2 h-100"></div>
+                        <hr class="d-lg-none">
+                    </li>
+
+                    <li class="nav-item dropdown d-flex align-items-center">
+                        <button class="btn bg-body-secondary p-0 d-flex align-items-center rounded-circle fs-4"
+                            type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static"
+                            aria-label="User">
+                            <span *ngIf="isDark" class="bi bi-person-circle opacity-75 p-1"
+                                style="line-height: 0;"></span>
+                            <span *ngIf="!isDark" class="bi bi-person-circle opacity-75 p-1"
+                                style="line-height: 0;"></span>
+                            <!-- <span class="d-lg-none ms-2" id="user-panel">Tài khoản</span> -->
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end" style="min-width: 200px;"
+                            aria-labelledby="user-panel">
+                            <div class="card border-0 rounded-0 m-3">
+                                <div class="d-flex gap-3 align-items-center bg-body-secondary rounded-1 p-2">
+                                    <img class="img-fluid rounded-circle"
+                                        style="max-width: 50px; max-height: 50px; aspect-ratio: 1/1;"
+                                        src="https://via.placeholder.com/100x100" alt="Avatar">
+                                    <h5 class="card-title m-0 text-wrapped">Lorem ipsum dolor
+                                        sit amet.</h5>
+                                </div>
+                                <div class="card-body p-0 text-center">
+                                    <p class="card-text">Đăng nhập hoặc đăng ký để sử dụng các tính năng đặc biệt</p>
+                                </div>
+                            </div>
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center"
+                                    routerLink="/login">
+                                    Đăng nhập
+                                    <span class="bi bi-box-arrow-in-right ms-auto fs-3"></span>
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center"
+                                    routerLink="/register">
+                                    Đăng ký
+                                    <span class="bi bi-pencil-square ms-auto fs-4"></span>
+                                </button>
+                            </li>
+                            <!-- <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center"
+                                    data-bs-theme-value="auto" aria-pressed="false">
+                                    <span class="bi bi-circle-half me-2 opacity-50"></span>
+                                    Auto
+                                    <span class="bi bi-check2 ms-auto d-none"></span>
+                                </button>
+                            </li> -->
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
 
 <router-outlet></router-outlet>
 

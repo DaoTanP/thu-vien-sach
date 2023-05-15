@@ -10,7 +10,7 @@
 <div class="container mb-5">
     <div class="row g-4">
         <div class="col-lg-3">
-            <div class="container bg-body-secondary p-2 rounded-2 sticky-top" style="top: 4rem;">
+            <div class="container bg-body-secondary p-2 rounded-2 sticky-top z-n1" style="top: 4rem;">
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between align-items-center active">
                         Active list item
@@ -74,7 +74,8 @@
                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" aria-pressed="false"
                         autocomplete="off"><span class="bi bi-grid-3x3-gap-fill"></span></button>
                 </div>
-                <div class="col-12 d-flex">
+                <app-book-grid [column]="6" [row]="2" [data]="bookList"></app-book-grid>
+                <!-- <div class="col-12 d-flex">
                     <app-book></app-book>
                     <app-book></app-book>
                     <app-book></app-book>
@@ -114,7 +115,7 @@
                             </a>
                         </li>
                     </ul>
-                </nav>
+                </nav> -->
             </div>
         </div>
     </div>
