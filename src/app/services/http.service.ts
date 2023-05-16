@@ -7,12 +7,13 @@ import { Observable } from 'rxjs';
 })
 export class HttpService
 {
-  private BOOK_API_URL = 'http://localhost:3000/books';
-  private USER_API_URL = 'http://localhost:3000/authentication';
+  private BOOK_API_URL = 'https://express-api.dao-tan-phattan.repl.co/books';
+  private USER_API_URL = 'https://express-api.dao-tan-phattan.repl.co/authentication';
 
   constructor(private httpClient: HttpClient) { }
 
-  public register(username: string, email: string, password: string) {
+  public register (username: string, email: string, password: string)
+  {
     const url = `${this.USER_API_URL}/register`;
     const data = { username, email, password };
     return this.httpClient.post(url, data);

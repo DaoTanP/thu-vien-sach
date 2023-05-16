@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Book } from 'src/app/models/book';
+import { BookService } from 'src/app/services/book.service';
 
 @Component({
   selector: 'app-book-details',
@@ -10,10 +11,10 @@ import { Book } from 'src/app/models/book';
 export class BookDetailsComponent
 {
   protected book: Book | undefined;
-  constructor(private route: ActivatedRoute)
+  constructor(private bookService: BookService, private route: ActivatedRoute)
   {
-    const code = this.route.snapshot.paramMap.get('id') || '';
+    const id = this.route.snapshot.paramMap.get('id') || '';
 
-    this.book = new Book() /* get book */;
+    this.book = this.bookService.getById(id);
   }
 }

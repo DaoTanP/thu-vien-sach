@@ -28,11 +28,11 @@
             </div>
         </div>
         <div class="col">
-            <form class="mb-3">
+            <form class="mb-3" (submit)="search(searchBox.value)">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control border-2 border-primary-subtle"
+                    <input #searchBox type="text" class="form-control border-2 border-primary-subtle"
                         placeholder="Nhập nội dung tìm kiếm" aria-describedby="search">
-                    <button class="btn btn-primary" type="button" id="search">
+                    <button class="btn btn-primary" type="submit" id="search">
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
@@ -68,54 +68,15 @@
             </form>
             <div class="row">
                 <div class="col my-2">
-                    <h5>Kết quả tìm kiếm</h5>
+                    <h5>Kết quả tìm kiếm
+                        <span class="badge bg-secondary">{{numberOfResults}}</span>
+                    </h5>
                 </div>
                 <div class="col-auto ms-auto">
                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" aria-pressed="false"
                         autocomplete="off"><span class="bi bi-grid-3x3-gap-fill"></span></button>
                 </div>
                 <app-book-grid [column]="6" [row]="2" [data]="bookList"></app-book-grid>
-                <!-- <div class="col-12 d-flex">
-                    <app-book></app-book>
-                    <app-book></app-book>
-                    <app-book></app-book>
-                    <app-book></app-book>
-                    <app-book></app-book>
-                </div>
-                <div class="col-12 d-flex">
-                    <app-book></app-book>
-                    <app-book></app-book>
-                    <app-book></app-book>
-                    <app-book></app-book>
-                    <app-book></app-book>
-                </div>
-                <div class="col-12 d-flex">
-                    <app-book></app-book>
-                    <app-book></app-book>
-                    <app-book></app-book>
-                    <app-book></app-book>
-                    <app-book></app-book>
-                </div>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination   justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span class="bi bi-arrow-left-short" aria-hidden="true"></span>
-                            </a>
-                        </li>
-                        <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link" href="#">6</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span class="bi bi-arrow-right-short" aria-hidden="true"></span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav> -->
             </div>
         </div>
     </div>

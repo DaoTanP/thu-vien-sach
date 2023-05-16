@@ -10,5 +10,5 @@ export const mainLayoutRoute: Routes = [
     { path: 'search', component: BookSearchComponent },
     { path: 'book', component: BookDetailsComponent },
     { path: 'book/:id', component: BookDetailsComponent },
-    { path: 'profile/', component: ProfileComponent },
+    { path: 'profile', component: ProfileComponent },
 ]

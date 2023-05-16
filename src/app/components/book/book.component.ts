@@ -9,6 +9,6 @@ import { Book } from 'src/app/models/book';
 export class BookComponent
 {
   @Input() book: Book = new Book();
-  @Input() href: string = '/book/' + this.book.id;
+  @Input() href: string | undefined = undefined;
   @Input() hrefTitle: string = 'view details ->';
 }
