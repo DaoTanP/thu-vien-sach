@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +18,7 @@ import { BookScrollListComponent } from './components/book-scroll-list/book-scro
 import BookGridComponent from './components/book-grid/book-grid.component';
 import { BookSearchComponent } from './components/book-search/book-search.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     BookScrollListComponent,
     BookSearchComponent,
     BookGridComponent,
-    ProfileComponent
+    ProfileComponent,
+    CarouselComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +42,6 @@ import { ProfileComponent } from './components/profile/profile.component';
     HttpClientModule,
     ReactiveFormsModule,
     SlickCarouselModule,
-    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

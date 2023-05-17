@@ -1,61 +1,3 @@
-<!-- <header class="p-2 bg-body-tertiary shadow sticky-top">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-xl-start">
-            <a routerLink="/" class="d-flex align-items-center mb-2 mb-xl-0 text-decoration-none">
-                <i class="bi bi-bootstrap-fill fs-3"></i>
-            </a>
-
-            <nav class="navbar navbar-expand-sm m-0 p-0">
-                <ul class="nav navbar-nav col-12 col-xl-auto mb-2 justify-content-center mb-md-0">
-                    <li class="nav-item"><a routerLink="/home" class="nav-link px-2 active">Trang chủ</a></li>
-                    <li class="nav-item"><a routerLink="/search" class="nav-link px-2">Tìm sách</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2">E-book</a></li>
-                </ul>
-            </nav>
-
-            <form class="col-12 col-xl-5 mb-3 mb-xl-0 m-xl-auto">
-                <div class="input-group">
-                    <input type="text" class="form-control border-2" placeholder="Tìm tên sách"
-                        aria-describedby="quick-search">
-                    <button class="btn btn-primary" type="button" id="quick-search">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </form>
-
-            <div class="text-end w-sm-100">
-                <span *ngIf="switchThemeFunction != undefined">
-                    <input type="checkbox" class="btn-check" id="btn-check-outlined" autocomplete="off">
-                    <label class="btn btn-outline-secondary rounded-circle py-2 me-sm-2" for="btn-check-outlined"
-                        (click)="toggleTheme()">
-                        <span *ngIf="isDark"><i class="bi bi-moon-fill"></i></span>
-                        <span *ngIf="!isDark"><i class="bi bi-sun-fill"></i></span>
-                    </label>
-                </span>
-                <a routerLink="/login"
-                    class="btn btn-outline-secondary me-sm-2 d-block d-sm-inline-block mb-2 mb-sm-0">Đăng
-                    nhập</a>
-                <a routerLink="/register" class="btn btn-primary d-block d-sm-inline-block">Đăng ký</a>
-                <div class="flex-shrink-0 dropdown d-inline-block ms-2 d-none">
-                    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle L-Affiliate-Tagged"
-                        id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                        <li><a class="dropdown-item L-Affiliate-Tagged" href="#">New project...</a></li>
-                        <li><a class="dropdown-item L-Affiliate-Tagged" href="#">Settings</a></li>
-                        <li><a class="dropdown-item L-Affiliate-Tagged" href="#">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item L-Affiliate-Tagged" href="#">Sign out</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</header> -->
-
 <nav class="navbar navbar-expand-lg p-2 bg-body-tertiary shadow sticky-top">
     <div class="container d-flex">
         <button class="navbar-toggler d-flex d-lg-none p-2" data-bs-toggle="offcanvas" data-bs-target="#navbar"
@@ -102,7 +44,7 @@
                 <hr class="d-lg-none">
 
                 <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
-                    <li class="nav-item dropdown col-6 col-lg-auto">
+                    <!-- <li class="nav-item col-6 col-lg-auto">
                         <button *ngIf="switchThemeFunction != undefined"
                             class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
                             id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown"
@@ -130,43 +72,83 @@
                                     <span class="bi bi-check2 ms-auto d-none"></span>
                                 </button>
                             </li>
-                            <!-- <li>
-                                                    <button type="button" class="dropdown-item d-flex align-items-center"
-                                                        data-bs-theme-value="auto" aria-pressed="false">
-                                                        <span class="bi bi-circle-half me-2 opacity-50"></span>
-                                                        Auto
-                                                        <span class="bi bi-check2 ms-auto d-none"></span>
-                                                    </button>
-                                                </li> -->
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center"
+                                    data-bs-theme-value="auto" aria-pressed="false">
+                                    <span class="bi bi-circle-half me-2 opacity-50"></span>
+                                    Auto
+                                    <span class="bi bi-check2 ms-auto d-none"></span>
+                                </button>
+                            </li>
+                        </ul>
+                    </li> -->
+
+                    <li class="nav-item col-6 col-lg-auto d-flex align-items-center">
+                        <span *ngIf="switchThemeFunction != undefined">
+                            <input type="checkbox" class="btn-check" id="btn-check-theme" autocomplete="off"
+                                (click)="toggleTheme()">
+                            <label
+                                class="btn btn-outline-secondary border-light-subtle text-body bg-body-secondary rounded-circle py-2"
+                                for="btn-check-theme">
+                                <span *ngIf="isDark"><i class="bi bi-moon-fill"></i></span>
+                                <span *ngIf="!isDark"><i class="bi bi-sun-fill"></i></span>
+                                <span class="d-lg-none ms-2" id="bd-theme-text">Giao diện:&nbsp;
+                                    <span *ngIf="isDark">Tối</span>
+                                    <span *ngIf="!isDark">Sáng</span>
+                                </span>
+                            </label>
+                        </span>
+                    </li>
+
+                    <div class="me-lg-2"></div>
+
+                    <li class="nav-item dropdown col-6 col-lg-auto d-flex align-items-center">
+                        <button type="button"
+                            class="btn btn-outline-secondary border-light-subtle text-body bg-body-secondary py-2 rounded-circle position-relative"
+                            aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static"
+                            aria-label="Message">
+                            <span class="bi bi-bell-fill" style="line-height: 0;"></span>
+                            <span class="d-lg-none ms-2">Thông báo</span>
+                            <span
+                                class="position-absolute top-0 mt-1 ms-2 p-2 translate-middle bg-danger border border-light rounded-circle">
+                                <span class="visually-hidden">New alerts</span>
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end" style="min-width: 200px;"
+                            aria-labelledby="Message">
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center" routerLink="/aaa">
+                                    Dolor sit amet.
+                                    <span class="bi bi-emoji-kiss ms-auto fs-3"></span>
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center" routerLink="/bbb">
+                                    Lorem, ipsum.
+                                    <span class="bi bi-emoji-smile ms-auto fs-3"></span>
+                                </button>
+                            </li>
                         </ul>
                     </li>
 
-                    <li class="nav-item dropdown col-6 col-lg-auto">
-                        <button type="button" class="nav-link py-2 px-0 px-lg-2" aria-expanded="false"
-                            data-bs-toggle="dropdown" data-bs-display="static" aria-label="Message">
-                            <span class="bi bi-bell-fill"></span>
-                            <span class="d-lg-none ms-2">Thông báo</span>
-                        </button>
-                    </li>
-
-                    <li class="nav-item py-1 col-12 col-lg-auto">
+                    <!-- <li class="nav-item py-1 col-12 col-lg-auto">
                         <div class="vr d-none d-lg-flex mx-lg-2 h-100"></div>
                         <hr class="d-lg-none">
-                    </li>
+                    </li> -->
+                    <div class="me-lg-2"></div>
 
                     <li class="nav-item dropdown d-flex align-items-center">
-                        <button class="btn bg-body-secondary p-0 d-flex align-items-center rounded-circle fs-4"
+                        <button
+                            class="btn btn-outline-secondary border-light-subtle text-body bg-body-secondary p-2 rounded-circle d-flex align-items-center fs-4"
                             type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static"
                             aria-label="User">
-                            <span *ngIf="isDark" class="bi bi-person-circle opacity-75 p-1"
-                                style="line-height: 0;"></span>
-                            <span *ngIf="!isDark" class="bi bi-person-circle opacity-75 p-1"
-                                style="line-height: 0;"></span>
+                            <span *ngIf="isDark" class="bi bi-person-circle" style="line-height: 0;"></span>
+                            <span *ngIf="!isDark" class="bi bi-person-circle" style="line-height: 0;"></span>
                             <!-- <span class="d-lg-none ms-2" id="user-panel">Tài khoản</span> -->
                         </button>
                         <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end" style="min-width: 200px;"
                             aria-labelledby="user-panel">
-                            <div class="card border-0 rounded-0 m-3">
+                            <div class="card border-0 rounded-0 m-3" routerLink="/profile" style="cursor: pointer;">
                                 <div class="d-flex gap-3 align-items-center bg-body-secondary rounded-1 p-2">
                                     <img class="img-fluid rounded-circle"
                                         style="max-width: 50px; max-height: 50px; aspect-ratio: 1/1;"
@@ -192,14 +174,6 @@
                                     <span class="bi bi-pencil-square ms-auto fs-4"></span>
                                 </button>
                             </li>
-                            <!-- <li>
-                                <button type="button" class="dropdown-item d-flex align-items-center"
-                                    data-bs-theme-value="auto" aria-pressed="false">
-                                    <span class="bi bi-circle-half me-2 opacity-50"></span>
-                                    Auto
-                                    <span class="bi bi-check2 ms-auto d-none"></span>
-                                </button>
-                            </li> -->
                         </ul>
                     </li>
                 </ul>
