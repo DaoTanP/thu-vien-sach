@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -12,6 +12,7 @@ export class MainLayoutComponent
   protected setThemeFunction: any = undefined;
   protected getThemeFunction: any = undefined;
   protected isDark: boolean = false;
+  protected isScrolled: boolean = false;
   constructor(private dataService: DataService)
   {
     this.switchThemeFunction = this.dataService.getData('switchTheme');
@@ -35,5 +36,11 @@ export class MainLayoutComponent
   getTheme = () =>
   {
     return this.getThemeFunction() == 'dark' ? true : false;
+  }
+
+  @HostListener("window:scroll")
+  scrollEvent ()
+  {
+    window.pageYOffset >= 20 ? (this.isScrolled = true) : (this.isScrolled = false);
   }
 }

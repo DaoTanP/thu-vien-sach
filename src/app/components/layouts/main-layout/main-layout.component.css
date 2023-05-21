@@ -21,3 +21,7 @@ input[type="search"]:focus {
         width: 100%;
     }
 }
+
+.navbar {
+    transition: all .3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}

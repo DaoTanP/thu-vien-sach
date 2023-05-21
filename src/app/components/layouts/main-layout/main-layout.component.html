@@ -1,13 +1,13 @@
-<nav class="navbar navbar-expand-lg p-2 bg-body-tertiary shadow sticky-top">
+<nav class="navbar navbar-expand-lg p-2 sticky-top bg-transparent" [ngClass]="{'shadow bg-body-tertiary': isScrolled}">
     <div class="container d-flex">
         <button class="navbar-toggler d-flex d-lg-none p-2" data-bs-toggle="offcanvas" data-bs-target="#navbar"
             aria-controls="bdNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <button class="navbar-toggler d-flex d-lg-none p-2 order-3" data-bs-toggle="offcanvas" data-bs-target="#navbar"
+        <!-- <button class="navbar-toggler d-flex d-lg-none p-2 order-3" data-bs-toggle="offcanvas" data-bs-target="#navbar"
             aria-controls="bdNavbar">
             <span class="bi bi-search" style="font-size: 30px;"></span>
-        </button>
+        </button> -->
         <a routerLink="/" class="d-block align-items-center text-decoration-none m-auto">
             <i class="bi bi-bootstrap-fill fs-3"></i>
         </a>
@@ -25,14 +25,11 @@
                         <a routerLink="/home" class="nav-link py-2 px-0 px-lg-2 active">Trang chủ</a>
                     </li>
                     <li class="nav-item col-6 col-lg-auto">
-                        <a routerLink="/search" class="nav-link py-2 px-0 px-lg-2">Tìm sách</a>
-                    </li>
-                    <li class="nav-item col-6 col-lg-auto">
-                        <a href="#" class="nav-link py-2 px-0 px-lg-2">E-book</a>
+                        <a routerLink="/search" class="nav-link py-2 px-0 px-lg-2">Tra cứu sách</a>
                     </li>
                 </ul>
 
-                <form class="flex-grow-1 mx-0 mx-lg-4">
+                <!-- <form class="flex-grow-1 mx-0 mx-lg-4">
                     <div class="input-group">
                         <input type="text" class="form-control border-2" placeholder="Tìm tên sách"
                             aria-describedby="quick-search">
@@ -40,7 +37,7 @@
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
-                </form>
+                </form> -->
                 <hr class="d-lg-none">
 
                 <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
@@ -181,6 +178,7 @@
         </div>
     </div>
 </nav>
+<div class="mb-4"></div>
 
 <router-outlet></router-outlet>
 

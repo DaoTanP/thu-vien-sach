@@ -1,82 +1,129 @@
-<div class="p-4 p-md-5 mb-5 bg-body-secondary">
-    <div class="col-md-6 px-0">
-        <h1 class="display-4 fst-italic">Title of a longer featured blog post</h1>
-        <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and
-            efficiently about what's most interesting in this post's contents.</p>
-        <p class="lead mb-0"><a href="#" class="text-white fw-bold ">Continue reading...</a>
-        </p>
-    </div>
-</div>
 <div class="container mb-5">
     <div class="row g-4">
-        <div class="col-lg-3">
-            <div class="container bg-body-secondary p-2 rounded-2 sticky-top z-n1" style="top: 4rem;">
-                <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center active">
-                        Active list item
-                        <span class="badge bg-secondary badge-pill">pill1</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        List item
-                        <span class="badge bg-secondary badge-pill">pill2</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center disabled">
-                        Disabled item
-                        <span class="badge bg-secondary badge-pill">pill3</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col">
-            <form class="mb-3" (submit)="search(searchBox.value)">
-                <div class="input-group mb-3">
-                    <input #searchBox type="text" class="form-control border-2 border-primary-subtle"
-                        placeholder="Nhập nội dung tìm kiếm" aria-describedby="search">
-                    <button class="btn btn-primary" type="submit" id="search">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-                <div class="row mb-5 g-3">
-                    <div class="col-12 col-md">
-                        <div class="input-group">
-                            <select class="form-select" name="" id="">
-                                <option selected hidden>Sắp xếp theo</option>
-                                <option value="">Tên sách</option>
-                                <option value="">Năm xuất bản</option>
-                                <option value="">Số lượt mượn</option>
-                            </select>
-                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button"
-                                aria-pressed="false" autocomplete="off"><span class="bi bi-sort-up"></span></button>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md">
-                        <select class="form-select" name="" id="">
-                            <option selected hidden>Thể loại</option>
-                            <option value="">Giáo dục</option>
-                            <option value="">Pháp luật</option>
-                            <option value="">Công nghệ</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-md">
-                        <select class="form-select" name="" id="">
-                            <option selected hidden>Tình trạng</option>
-                            <option value="">Có sẵn</option>
-                            <option value="">Hết sách</option>
-                        </select>
-                    </div>
-                </div>
-            </form>
+        <div class="col order-1 order-lg-0">
             <div class="row">
                 <div class="col my-2">
-                    <h5>Kết quả tìm kiếm
-                        <span class="badge bg-secondary">{{numberOfResults}}</span>
-                    </h5>
+                    <p class="small">
+                        <span class="fw-bold">{{firstItemOnPage}}-{{lastItemOnPage}}</span>
+                        trên tổng số <span class="fw-bold">{{this.bookList.length}}</span> kết quả
+                    </p>
                 </div>
                 <div class="col-auto ms-auto">
                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" aria-pressed="false"
                         autocomplete="off"><span class="bi bi-grid-3x3-gap-fill"></span></button>
                 </div>
-                <app-book-grid [column]="6" [row]="2" [data]="bookList"></app-book-grid>
+                <app-book-grid [column]="6" [row]="2" [data]="bookList" (onInit)="getPaginationInfo($event)"
+                    (onChangePage)="getPaginationInfo($event)"></app-book-grid>
+            </div>
+        </div>
+        <div class="col-lg-4 col-xl-3 order-0 order-lg-1">
+            <div class="container p-2 rounded-2 z-0" style="top: 4rem;">
+                <form [formGroup]="searchForm" class="mb-3" (ngSubmit)="search()">
+                    <div class="mb-3">
+                        <input [formControl]="searchInput" type="text" class="form-control border-2"
+                            placeholder="Nhập nội dung tìm kiếm" aria-describedby="search">
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-primary d-block w-100 mb-2" type="submit">
+                            Tìm kiếm
+                        </button>
+                        <button class="btn bg-body-secondary d-block w-100" type="reset" (click)="reset()">
+                            Đặt lại
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="filter1-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#filter1" aria-expanded="true" aria-controls="filter1">
+                                        Thể loại
+                                    </button>
+                                </h2>
+                                <div id="filter1" class="accordion-collapse collapse show"
+                                    aria-labelledby="filter1-header">
+                                    <div class="accordion-body d-flex flex-column gap-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="filter1A">
+                                            <label class="form-check-label" for="filter1A">
+                                                Văn học
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="filter1B">
+                                            <label class="form-check-label" for="filter1B">
+                                                Kinh tế
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="filter1C">
+                                            <label class="form-check-label" for="filter1C">
+                                                Công nghệ
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="filter2-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#filter2" aria-expanded="true" aria-controls="filter2">
+                                        Accordion Item #2
+                                    </button>
+                                </h2>
+                                <div id="filter2" class="accordion-collapse collapse show"
+                                    aria-labelledby="filter2-header">
+                                    <div class="accordion-body">
+                                        <div id="filter2" class="accordion-collapse collapse show"
+                                            aria-labelledby="filter1-header">
+                                            <div class="accordion-body d-flex flex-column gap-1">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        id="filter1A">
+                                                    <label class="form-check-label" for="filter1A">
+                                                        Văn học
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        id="filter1B">
+                                                    <label class="form-check-label" for="filter1B">
+                                                        Kinh tế
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        id="filter1C">
+                                                    <label class="form-check-label" for="filter1C">
+                                                        Công nghệ
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="filter3-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#filter3" aria-expanded="true" aria-controls="filter3">
+                                        Năm xuất bản
+                                    </button>
+                                </h2>
+                                <div id="filter3" class="accordion-collapse collapse show"
+                                    aria-labelledby="filter3-header">
+                                    <div class="accordion-body d-flex gap-1 align-items-center">
+                                        <input type="number" [formControl]="publishedFrom" class="form-control"
+                                            id="publishedFrom" min="1970" max="2023" placeholder="Từ năm">
+                                        <span class="bi bi-dash"></span>
+                                        <input type="number" [formControl]="publishedTo" class="form-control"
+                                            id="publishedTo" min="1970" max="2023" placeholder="Đến năm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@
     <app-book *ngFor="let item of itemsToDisplay" [book]="item" class="col"></app-book>
 </div>
 
-<nav aria-label="Page navigation">
+<nav *ngIf="total > 1" aria-label="Page navigation">
     <ul class="pagination justify-content-center">
         <li class="page-item" [class.disabled]="current === 1">
             <button class="page-link" href="#" aria-label="Previous" [attr.aria-disabled]="current === 1"

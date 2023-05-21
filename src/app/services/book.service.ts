@@ -14,6 +14,7 @@ export class BookService
       data.forEach((b: any) =>
         this.books.push({ imgUrl: b.image, publishDate: b.published, ...b })
       )
+      // this.books = data
     );
   }
 
@@ -22,26 +23,30 @@ export class BookService
     return this.books;
   }
 
+  getAsync ()
+  {
+    return this.httpService.getBooks();
+  }
+
   getById (id: string)
   {
     return this.books.find(b => b.id === id);
   }
 
-  search (keywords: string)
+  search (bookList: Book[], keywords: string)
   {
     if (keywords.trim() == '' || !keywords)
       return [];
     let keywordTokens = keywords.trim().toLowerCase().split(' ');
     let result = [];
 
-    for (let i = 0; i < this.books.length; i++)
+    for (let i = 0; i < bookList.length; i++)
     {
-      let properties = Object.entries(this.books[i]);
+      let properties = Object.entries(bookList[i]);
 
       let score = 0;
       for (let j = 0; j < properties.length; j++)
       {
-        console.log(properties[j]);
         let tokens = properties[j][1].toLowerCase().split(' ');
         for (let k = 0; k < tokens.length; k++)
         {
@@ -59,7 +64,7 @@ export class BookService
       if (score < 1)
         continue;
 
-      result.push({ ...this.books[i], score });
+      result.push({ ...bookList[i], score });
     }
 
     result.sort((a, b) => b.score - a.score);

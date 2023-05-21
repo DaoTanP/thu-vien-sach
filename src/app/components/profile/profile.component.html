@@ -1,118 +1,101 @@
-<!-- Nav tabs -->
-<ul class="nav nav-tabs" id="profileTab" role="tablist">
-  <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab"
-      aria-controls="info" aria-selected="true">Thông tin</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="favorite-tab" data-bs-toggle="tab" data-bs-target="#favorite" type="button" role="tab"
-      aria-controls="favorite" aria-selected="false">Yêu thích</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab"
-      aria-controls="history" aria-selected="false">Lịch sử mượn</button>
-  </li>
-</ul>
-<!-- Tab content -->
-<div class="tab-content">
-  <div class="tab-pane active" id="info" role="tabpanel" aria-labelledby="info-tab">
-    <section class="">
-      <div class="container py-5">
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="card mb-4 shadow">
-              <div class="card-body text-center">
-                <img src="https://via.placeholder.com/100x100" alt="avatar"
-                  class="rounded-circle img-fluid" style="width: 150px;">
-                <!-- Ghi thông tin gì nhỉ -->
-                <h4 class="my-3">Tên đăng nhập</h4>
-                <p class="text-muted mb-1">Sinh viên</p>
-                <p class="text-muted mb-4">Lớp - Khoa</p>
-              </div>
+<div class="container mb-5">
+  <div class="row mb-5">
+    <div class="col-auto"><img
+        src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=128&q=80"
+        alt="avatar" class="rounded-circle img-fluid border border-5 border-light-subtle shadow-sm avatar"></div>
+    <div class="col d-flex flex-column justify-content-start">
+      <p class="h4">Sum Dolor</p>
+      <p class="text-muted m-0">Lorem ipsum dolor sit amet.</p>
+      <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis quisquam, error porro nobis
+        autem ducimus harum nemo. Harum nostrum nam dolores excepturi sed iure non? Necessitatibus in commodi nobis
+        illum?</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <ul class="nav nav-tabs" id="profileTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
+            role="tab" aria-controls="info" aria-selected="true">Thông tin</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="favorite-tab" data-bs-toggle="tab" data-bs-target="#favorite" type="button"
+            role="tab" aria-controls="favorite" aria-selected="false">Yêu thích</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button"
+            role="tab" aria-controls="history" aria-selected="false">Lịch sử mượn</button>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane py-3 active position-relative" id="info" role="tabpanel" aria-labelledby="info-tab">
+          <button class="btn btn-primary position-absolute top-0 end-0 mt-3" data-bs-toggle="modal"
+            data-bs-target="#infoModal">Chỉnh sửa</button>
+          <div class="d-flex flex-column gap-3">
+            <div class="row justify-content-center align-items-center g-2">
+              <div class="col-3">Họ và tên</div>
+              <div class="col">Lorem, ipsum.</div>
             </div>
-          </div>
-          <div class="col-lg-8">
-            <div class="card mb-4 shadow">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="row justify-content-center">
-                      <div class="col-sm-8">
-                        <div class="row">
+            <div class="row justify-content-center align-items-center g-2">
+              <div class="col-3">Giới tính</div>
+              <div class="col">Nam</div>
+            </div>
+            <div class="row justify-content-center align-items-center g-2">
+              <div class="col-3">Ngày sinh</div>
+              <div class="col">1/1/1970</div>
+            </div>
+            <div class="row justify-content-center align-items-center g-2">
+              <div class="col-3">Số điện thoại</div>
+              <div class="col">0933456789</div>
+            </div>
+            <div class="row justify-content-center align-items-center g-2">
+              <div class="col-3">Email</div>
+              <div class="col">johndoe@example.com</div>
+            </div>
+            <div class="row justify-content-center align-items-center g-2">
+              <div class="col-3">Địa chỉ</div>
+              <div class="col">12 Avenue Street, New York</div>
+            </div>
 
-                        </div>
-                      </div>
-                    </div>
+            <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Chỉnh sửa thông tin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <div class="col-sm-3">
-                    <p class="mb-0">Họ & Tên:</p>
+                  <div class="modal-body">
+                    <form>
+                      <div class="col-3">Họ và tên</div>
+                      <div class="col">Lorem, ipsum.</div>
+                      <div class="col-3">Giới tính</div>
+                      <div class="col">Nam</div>
+                      <div class="col-3">Ngày sinh</div>
+                      <div class="col">1/1/1970</div>
+                      <div class="col-3">Số điện thoại</div>
+                      <div class="col">0933456789</div>
+                      <div class="col-3">Email</div>
+                      <div class="col">johndoe@example.com</div>
+                      <div class="col-3">Địa chỉ</div>
+                      <div class="col">12 Avenue Street, New York</div>
+                    </form>
                   </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">Tokuda</p>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Ngày sinh:</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">1/1/2002</p>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Giới tính:</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">Nam</p>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Email:</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">Tokuda@gmail.com</p>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary">Lưu thay đổi</button>
                   </div>
                 </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Số điện thoại:</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">(+84) 123456789</p>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Địa chỉ:</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">Nhật Bản</p>
-                  </div>
-                </div>
-                <hr>
-                <!-- Thêm 2 nút -->
-                <!-- <div class="d-flex justify-content-center mb-2">
-                  <button type="button" class="btn btn-primary">Chỉnh sửa thông tin</button>
-                  <button type="button" class="btn btn-outline-primary ms-1">Lưu thay đổi</button>
-                </div> -->
               </div>
             </div>
           </div>
         </div>
+        <div class="tab-pane py-3" id="favorite" role="tabpanel" aria-labelledby="favorite-tab">
+          <app-book-grid
+            [data]="[{title: 'lorem ipsum dolor sit', id: 'a', imgUrl: 'https://via.placeholder.com/400x600', author: 'b', publisher: 'b', publishDate: 'b', description: 'b'},{title: 'lorem ipsum dolor sit', id: 'a', imgUrl: 'https://via.placeholder.com/400x600', author: 'b', publisher: 'b', publishDate: 'b', description: 'b'},{title: 'lorem ipsum dolor sit', id: 'a', imgUrl: 'https://via.placeholder.com/400x600', author: 'b', publisher: 'b', publishDate: 'b', description: 'b'},{title: 'lorem ipsum dolor sit', id: 'a', imgUrl: 'https://via.placeholder.com/400x600', author: 'b', publisher: 'b', publishDate: 'b', description: 'b'},{title: 'lorem ipsum dolor sit', id: 'a', imgUrl: 'https://via.placeholder.com/400x600', author: 'b', publisher: 'b', publishDate: 'b', description: 'b'}]"></app-book-grid>
+        </div>
+        <div class="tab-pane py-3" id="history" role="tabpanel" aria-labelledby="history-tab">Lorem ipsum dolor sit amet
+          consectetur, adipisicing elit. In quod velit iste omnis debitis error, magni neque atque porro quidem?</div>
       </div>
-    </section>
+    </div>
   </div>
-  <!-- content favorite -->
-  <div class="tab-pane" id="favorite" role="tabpanel" aria-labelledby="favorite-tab">Lorem ipsum dolor sit amet,
-    consectetur adipisicing elit. Impedit illo eos commodi deserunt tenetur dignissimos!</div>
-    <!-- content history -->
-  <div class="tab-pane" id="history" role="tabpanel" aria-labelledby="history-tab">Lorem ipsum dolor sit amet
-    consectetur, adipisicing elit. In quod velit iste omnis debitis error, magni neque atque porro quidem?</div>
 </div>
