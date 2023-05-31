@@ -12,6 +12,7 @@
 }
 .card img {
     height: 100%;
+    width: auto;
     object-fit: cover;
     object-position: center center;
     transition: .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -37,4 +38,66 @@
 :is(.card:has(.stretched-link), .card.link) {
     overflow: hidden;
     cursor: pointer;
+}
+.card.d-grid {
+    grid-template-columns: 1fr 2fr;
+}
+@media (min-width: 425px) {
+    .card.d-grid {
+        grid-template-columns: 1fr 3fr;
+    }
+}
+/* 
+@media (min-width: 576px) {
+    .card.d-grid {
+        grid-template-columns: 1fr 4fr;
+    }
+}
+@media (min-width: 768px) {
+    .card.d-grid {
+        grid-template-columns: 1fr 4fr;
+    }
+}
+@media (min-width: 992px) {
+    .card.d-grid {
+        grid-template-columns: 1fr 5fr;
+    }
+}
+@media (min-width: 1200px) {
+    .card.d-grid {
+        grid-template-columns: 1fr 6fr;
+    }
+}
+@media (min-width: 1400px) {
+    #items-container {
+        --card-width: 10rem;
+    }
+} */
+
+@keyframes scale {
+    0% {
+        transform: scale(1, 1);
+    }
+    10% {
+        transform: scale(1.1, 0.9);
+        box-shadow: rgba(0, 0, 0, 0.3) 1px 2px 3px 1px;
+    }
+    30% {
+        transform: scale(1.9, 2.1);
+        box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 3px 1px;
+    }
+    50% {
+        transform: scale(2, 2);
+    }
+    57% {
+        transform: scale(2, 2);
+        box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px 1px;
+    }
+    64% {
+        transform: scale(2, 2);
+    }
+    100% {
+        transform: scale(2, 2);
+        box-shadow: rgba(0, 0, 0, 0.2) 1px 2px 7px 1px;
+    }
 }

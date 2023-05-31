@@ -143,15 +143,14 @@
                             <span *ngIf="!isDark" class="bi bi-person-circle" style="line-height: 0;"></span>
                             <!-- <span class="d-lg-none ms-2" id="user-panel">Tài khoản</span> -->
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end" style="min-width: 200px;"
-                            aria-labelledby="user-panel">
-                            <div class="card border-0 rounded-0 m-3" routerLink="/profile" style="cursor: pointer;">
+                        <ul *ngIf="!isLoggedIn" class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end"
+                            style="min-width: 200px;" aria-labelledby="user-panel">
+                            <div class="card border-0 rounded-0 m-3" routerLink="/login" style="cursor: pointer;">
                                 <div class="d-flex gap-3 align-items-center bg-body-secondary rounded-1 p-2">
                                     <img class="img-fluid rounded-circle"
                                         style="max-width: 50px; max-height: 50px; aspect-ratio: 1/1;"
                                         src="https://via.placeholder.com/100x100" alt="Avatar">
-                                    <h5 class="card-title m-0 text-wrapped">Lorem ipsum dolor
-                                        sit amet.</h5>
+                                    <h5 class="card-title m-0 text-wrapped">Khách</h5>
                                 </div>
                                 <div class="card-body p-0 text-center">
                                     <p class="card-text">Đăng nhập hoặc đăng ký để sử dụng các tính năng đặc biệt</p>
@@ -169,6 +168,33 @@
                                     routerLink="/register">
                                     Đăng ký
                                     <span class="bi bi-pencil-square ms-auto fs-4"></span>
+                                </button>
+                            </li>
+                        </ul>
+
+                        <ul *ngIf="isLoggedIn" class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end"
+                            style="min-width: 200px;" aria-labelledby="user-panel">
+                            <div class="card border-0 rounded-0 m-3" routerLink="/login" style="cursor: pointer;">
+                                <div class="d-flex gap-3 align-items-center bg-body-secondary rounded-1 p-2">
+                                    <img class="img-fluid rounded-circle"
+                                        style="max-width: 50px; max-height: 50px; aspect-ratio: 1/1;"
+                                        src="https://via.placeholder.com/100x100" alt="Avatar">
+                                    <h5 class="card-title m-0 text-wrapped">{{user.firstname + ' ' + user.lastname}}
+                                    </h5>
+                                </div>
+                            </div>
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center"
+                                    routerLink="/profile">
+                                    Thông tin
+                                    <span class="bi bi-person-circle ms-auto fs-4"></span>
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center"
+                                    (click)="logOut()">
+                                    Đăng xuất
+                                    <span class="bi bi-box-arrow-out-right ms-auto fs-3"></span>
                                 </button>
                             </li>
                         </ul>

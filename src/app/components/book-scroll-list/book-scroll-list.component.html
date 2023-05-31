@@ -14,7 +14,7 @@
         </div>
     </div>
     <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
-        <div ngxSlickItem *ngFor="let book of bookList" class="slide">
+        <div ngxSlickItem *ngFor="let book of bookList; index as i" class="slide mx-1">
             <app-book [book]="book"></app-book>
         </div>
     </ngx-slick-carousel>

@@ -1,11 +1,31 @@
-<!-- style="width: 12rem;" -->
-<div class="card p-0 border-0 bg-body text-body link w-sm-100 w-auto mx-1"
-    routerLink="{{href || '/book/' + this.book.id}}">
-    <div class="rounded-2"><img src="{{book.imgUrl}}" class="card-img-top img-fluid rounded-2" alt="..." loading="lazy">
+<ng-container *ngTemplateOutlet="isHorizontal ? horizontalCard : verticalCard">
+</ng-container>
+
+<ng-template #horizontalCard>
+    <div class="card p-0 rounded-0 border-0 bg-body text-body link w-100 d-grid" title="{{book.title}}"
+        routerLink="{{href || '/book/' + this.book.id}}">
+        <div>
+            <img src="{{book.imgUrl}}" class="img-fluid" alt="book cover" loading="lazy" style="object-fit: contain;">
+        </div>
+        <div class="card-body pe-2">
+            <h6 class="card-title text-wrapped max-line-2" title="{{book.title}}">{{book.title}}</h6>
+            <!-- <p class="card-text text-muted text-wrapped" title="{{book.author}}">{{book.author}}</p> -->
+            <p class="card-text"><small class="text-muted text-wrapped" title="{{book.author}}">{{book.author}}</small>
+            </p>
+        </div>
     </div>
-    <div class="card-body p-2">
-        <p class="card-text text-wrapped max-line-2 my-1">{{book.title}}</p>
-        <p class="small text-muted card-text text-wrapped my-1">{{book.author}}</p>
-        <!-- <a routerLink="{{href}}" class="stretched-link">Details -></a> -->
+</ng-template>
+
+<ng-template #verticalCard>
+    <!-- style="width: 12rem;" -->
+    <div class="card p-0 border-0 bg-body text-body link w-sm-100 w-auto"
+        routerLink="{{href || '/book/' + this.book.id}}">
+        <div class="rounded-2" title="{{book.title}}"><img src="{{book.imgUrl}}"
+                class="card-img-top img-fluid rounded-2" alt="book cover" loading="lazy">
+        </div>
+        <div class="card-body p-0">
+            <p class="card-text text-wrapped max-line-2 my-1" title="{{book.title}}">{{book.title}}</p>
+            <p class="small text-muted card-text text-wrapped my-1" title="{{book.author}}">{{book.author}}</p>
+        </div>
     </div>
-</div>
+</ng-template>

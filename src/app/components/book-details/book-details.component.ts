@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Book } from 'src/app/models/book';
-import { BookService } from 'src/app/services/book.service';
+import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-book-details',
@@ -11,10 +11,11 @@ import { BookService } from 'src/app/services/book.service';
 export class BookDetailsComponent
 {
   protected book: Book | undefined;
-  constructor(private bookService: BookService, private route: ActivatedRoute)
+  // protected book: Observable<Book>;
+  constructor(private httpService: HttpService, private route: ActivatedRoute)
   {
     const id = this.route.snapshot.paramMap.get('id') || '';
 
-    this.book = this.bookService.getById(id);
+    this.httpService.getBooks(id).subscribe(books => books.forEach((b: Book | undefined) => this.book = b));
   }
 }

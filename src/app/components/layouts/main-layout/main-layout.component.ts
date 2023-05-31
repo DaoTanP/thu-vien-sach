@@ -13,12 +13,21 @@ export class MainLayoutComponent
   protected getThemeFunction: any = undefined;
   protected isDark: boolean = false;
   protected isScrolled: boolean = false;
+  protected isLoggedIn: boolean = false;
+  protected user: any;
+
   constructor(private dataService: DataService)
   {
     this.switchThemeFunction = this.dataService.getData('switchTheme');
     this.setThemeFunction = this.dataService.getData('setTheme');
     this.getThemeFunction = this.dataService.getData('getTheme');
     this.isDark = this.getTheme();
+
+    if (sessionStorage.getItem('user') != null)
+    {
+      this.isLoggedIn = true;
+      this.user = JSON.parse(sessionStorage.getItem('user') || '');
+    }
   }
 
   toggleTheme ()
@@ -33,7 +42,7 @@ export class MainLayoutComponent
     this.isDark = this.getTheme();
   }
 
-  getTheme = () =>
+  getTheme ()
   {
     return this.getThemeFunction() == 'dark' ? true : false;
   }
@@ -42,5 +51,12 @@ export class MainLayoutComponent
   scrollEvent ()
   {
     window.pageYOffset >= 20 ? (this.isScrolled = true) : (this.isScrolled = false);
+  }
+
+  logOut ()
+  {
+    sessionStorage.removeItem('user');
+    this.isLoggedIn = false;
+    this.user = undefined;
   }
 }

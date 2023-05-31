@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { Book } from 'src/app/models/book';
-import { BookService } from 'src/app/services/book.service';
+import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-book-search',
@@ -10,8 +12,12 @@ import { BookService } from 'src/app/services/book.service';
 })
 export class BookSearchComponent
 {
+  protected displayStyleHorizontal: boolean = false;
+  protected searchString: string | undefined = undefined;
+  protected pageNumber: number | undefined = undefined;
+
+  bookListAsync: Observable<Book[]> = of([]);
   protected bookList: Book[] = [];
-  bookListOriginal: Book[] = [];
   protected firstItemOnPage: number = 0;
   protected lastItemOnPage: number = 0;
   protected totalItems: number = 0;
@@ -20,29 +26,46 @@ export class BookSearchComponent
   protected searchInput: FormControl = new FormControl(null);
   protected publishedFrom: FormControl = new FormControl(null);
   protected publishedTo: FormControl = new FormControl(null);
-  public searchForm: FormGroup = new FormGroup({
+  protected searchForm: FormGroup = new FormGroup({
     searchInput: this.searchInput,
     publishedFrom: this.publishedFrom,
     publishedTo: this.publishedTo,
   });
 
-  constructor(private bookService: BookService)
+  constructor(private httpService: HttpService, private router: Router, private route: ActivatedRoute)
   {
-    this.bookService.getAsync().subscribe(books =>
+    this.route.queryParams.subscribe(params =>
     {
-      this.bookListOriginal = books;
-      this.bookList = this.bookListOriginal.map((book: any) =>
+      this.searchString = params['q'];
+      if (this.searchString === undefined)
       {
-        return { imgUrl: book.image, publishDate: book.published, ...book }
-      });
+        this.bookListAsync = this.httpService.getBooks();
+      } else
+      {
+        this.searchInput.setValue(this.searchString);
+        this.bookListAsync = this.httpService.searchBooks(this.searchString);
+      }
+
+      this.pageNumber = params['p'];
+      this.router.navigate(['/search'], { queryParams: { p: this.pageNumber }, queryParamsHandling: 'merge' })
+
+      this.getList();
       this.updatePaginationInfo();
     });
   }
 
   reset ()
   {
-    this.bookList = this.bookListOriginal;
-    this.updatePaginationInfo();
+    this.router.navigate(['/search']);
+  }
+
+  getList ()
+  {
+    this.bookListAsync.subscribe(books =>
+    {
+      this.bookList = books;
+      this.totalItems = books.length;
+    });
   }
 
   search ()
@@ -51,8 +74,12 @@ export class BookSearchComponent
     if (!query || query == '')
       return;
 
-    this.bookList = this.bookService.search(this.bookListOriginal, query);
-    this.updatePaginationInfo();
+    this.router.navigate(['/search'], { queryParams: { q: this.searchForm.value.searchInput } });
+  }
+
+  onChangePage (e: any)
+  {
+    this.router.navigate(['/search'], { queryParams: { p: e.currentPage }, queryParamsHandling: 'merge' })
   }
 
   getPaginationInfo (e: any)
@@ -60,15 +87,16 @@ export class BookSearchComponent
     this.firstItemOnPage = (e.currentPage - 1) * e.itemsPerPage + 1;
     this.itemsPerPage = e.itemsPerPage;
     this.lastItemOnPage = e.currentPage * this.itemsPerPage;
-    if (this.lastItemOnPage > e.totalItems)
-      this.lastItemOnPage = e.totalItems;
+    this.totalItems = e.totalItems;
+    if (this.lastItemOnPage > this.totalItems)
+      this.lastItemOnPage = this.totalItems;
   }
 
   updatePaginationInfo ()
   {
     this.firstItemOnPage = 1
     this.lastItemOnPage = this.firstItemOnPage + this.itemsPerPage - 1;
-    if (this.lastItemOnPage > this.bookList.length)
-      this.lastItemOnPage = this.bookList.length
+    if (this.lastItemOnPage > this.totalItems)
+      this.lastItemOnPage = this.totalItems
   }
 }

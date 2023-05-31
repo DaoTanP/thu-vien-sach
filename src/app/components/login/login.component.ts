@@ -35,7 +35,7 @@ export class LoginComponent
     {
       if (res.status === 200)
       {
-        this.router.navigate(['book']);
+        this.router.navigate(['home']);
       }
     })
   }

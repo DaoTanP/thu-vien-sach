@@ -8,20 +8,24 @@ import { Observable } from 'rxjs';
 export class HttpService
 {
   private BOOK_API_URL = 'https://express-api.dao-tan-phattan.repl.co/books';
-  private USER_API_URL = 'https://express-api.dao-tan-phattan.repl.co/authentication';
+  // private USER_API_URL = 'https://express-api.dao-tan-phattan.repl.co/authentication';
+  private USER_API_URL = 'https://localhost:44389/api/user';
 
   constructor(private httpClient: HttpClient) { }
 
-  public register (username: string, email: string, password: string)
-  {
-    const url = `${this.USER_API_URL}/register`;
-    const data = { username, email, password };
-    return this.httpClient.post(url, data);
-  }
-
   public authenticate (username: string, password: string): Observable<any>
   {
-    return this.httpClient.post(this.USER_API_URL, { username, password }, { observe: 'response', responseType: "text" });
+    return this.httpClient.post(this.USER_API_URL + '/login', { username, password }, { observe: 'response', responseType: "text" });
+  }
+
+  public usernameExists (username: string): Observable<any>
+  {
+    return this.httpClient.post(this.USER_API_URL + "/usernameExists", { username });
+  }
+
+  public register (displayName: string, username: string, password: string): Observable<any>
+  {
+    return this.httpClient.post(this.USER_API_URL, { displayName, username, password });
   }
 
   public getBooks (id: string = ''): Observable<any>
@@ -30,5 +34,10 @@ export class HttpService
       return this.httpClient.get(this.BOOK_API_URL + '/' + id);
 
     return this.httpClient.get(this.BOOK_API_URL);
+  }
+
+  public searchBooks (keyword: string): Observable<any>
+  {
+    return this.httpClient.get(this.BOOK_API_URL + '/search?q=' + keyword);
   }
 }

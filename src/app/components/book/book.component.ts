@@ -10,5 +10,5 @@ export class BookComponent
 {
   @Input() book: Book = new Book();
   @Input() href: string | undefined = undefined;
-  @Input() hrefTitle: string = 'view details ->';
+  @Input() isHorizontal: boolean = false;
 }

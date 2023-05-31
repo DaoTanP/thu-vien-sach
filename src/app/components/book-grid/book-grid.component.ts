@@ -3,6 +3,7 @@ import { Book } from 'src/app/models/book';
 
 @Component({
   selector: 'app-book-grid',
+  exportAs: 'book-grid',
   templateUrl: './book-grid.component.html',
   styleUrls: ['./book-grid.component.css']
 })
@@ -11,6 +12,7 @@ export default class BookGridComponent implements OnInit
   @Input() row: number = 2;
   @Input() column: number = 6;
   @Input('data') books: Book[] = [];
+  @Input() isCardHorizontal: boolean = false;
 
   @Output() onInit = new EventEmitter();
   @Output() onChangePage = new EventEmitter();
@@ -37,6 +39,7 @@ export default class BookGridComponent implements OnInit
   {
     if (changes["books"] || changes["row"] || changes["column"])
     {
+      // this.current = 1;
       this.recalculate();
     }
 
@@ -44,32 +47,32 @@ export default class BookGridComponent implements OnInit
     // {
     // }
 
-    if (changes["current"] || changes["total"])
-    {
-      this.pages = this.getPages(this.current, this.total);
-    }
+    // if (changes["current"] || changes["total"])
+    // {
+    //   this.pages = this.getPages(this.current, this.total);
+    // }
   }
 
   public onGoTo (page: number): void
   {
-    this.current = page
-    this.itemsToDisplay = this.paginate(this.current, this.perPage)
-    this.pages = this.getPages(this.current, this.total);
+    this.changePage(page);
     this.onChangePage.emit({ totalPages: this.total, currentPage: this.current, itemsPerPage: this.perPage, itemsOnDisplay: this.itemsToDisplay.length, totalItems: this.items.length });
   }
   public onNext (): void
   {
-    this.current++;
-    this.itemsToDisplay = this.paginate(this.current, this.perPage)
-    this.pages = this.getPages(this.current, this.total);
+    this.changePage(this.current + 1);
     this.onChangePage.emit({ totalPages: this.total, currentPage: this.current, itemsPerPage: this.perPage, itemsOnDisplay: this.itemsToDisplay.length, totalItems: this.items.length });
   }
   public onPrevious (): void
   {
-    this.current--;
-    this.itemsToDisplay = this.paginate(this.current, this.perPage)
-    this.pages = this.getPages(this.current, this.total);
+    this.changePage(this.current - 1);
     this.onChangePage.emit({ totalPages: this.total, currentPage: this.current, itemsPerPage: this.perPage, itemsOnDisplay: this.itemsToDisplay.length, totalItems: this.items.length });
+  }
+  public changePage (page: number): void
+  {
+    this.current = page;
+    this.itemsToDisplay = this.paginate(this.current, this.perPage);
+    this.pages = this.getPages(this.current, this.total);
   }
   private getPages (current: number, total: number): number[]
   {
