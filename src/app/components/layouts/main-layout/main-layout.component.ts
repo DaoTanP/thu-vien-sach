@@ -23,10 +23,13 @@ export class MainLayoutComponent
     this.getThemeFunction = this.dataService.getData('getTheme');
     this.isDark = this.getTheme();
 
-    if (sessionStorage.getItem('user') != null)
+    const sessionData = this.dataService.getSession('user');
+    if (typeof sessionData === 'string')
     {
+      this.user = JSON.parse(sessionData);
       this.isLoggedIn = true;
-      this.user = JSON.parse(sessionStorage.getItem('user') || '');
+      console.log(this.user);
+
     }
   }
 
@@ -55,7 +58,7 @@ export class MainLayoutComponent
 
   logOut ()
   {
-    sessionStorage.removeItem('user');
+    this.dataService.removeSession('user');
     this.isLoggedIn = false;
     this.user = undefined;
   }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
+import { DataService } from 'src/app/services/data.service';
 import { HttpService } from 'src/app/services/http.service';
 
 @Component({
@@ -27,7 +28,7 @@ export class RegisterComponent
     agreement: this.agreement
   });
 
-  constructor(private httpService: HttpService, private router: Router) { }
+  constructor(private httpService: HttpService, private dataService: DataService, private router: Router) { }
 
   public matchValidator (controlToMatch: AbstractControl<any, any>): ValidatorFn
   {
@@ -58,6 +59,7 @@ export class RegisterComponent
 
   public register ()
   {
+    this.clearAlert();
     this.waiting = true;
     const displayName = this.registerForm.value.displayName || '';
     const username = this.registerForm.value.username || '';
@@ -66,9 +68,9 @@ export class RegisterComponent
       next: (res) =>
       {
         this.waiting = false;
-        sessionStorage.setItem('user', JSON.stringify(res));
+        this.dataService.setSession('user', JSON.stringify(res));
+        this.router.navigate(['home']);
         // console.log(res);
-
       }, error: (err) =>
       {
         this.waiting = false;
@@ -108,5 +110,18 @@ export class RegisterComponent
     ].join('')
 
     alertPlaceholder.prepend(wrapper);
+  }
+
+  public clearAlert ()
+  {
+    let alertPlaceholder = document.getElementById('form-wrapper');
+    if (alertPlaceholder == null)
+      return;
+
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(element =>
+    {
+      element.remove();
+    });
   }
 }

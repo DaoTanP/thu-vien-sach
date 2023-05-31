@@ -136,67 +136,74 @@
 
                     <li class="nav-item dropdown d-flex align-items-center">
                         <button
-                            class="btn btn-outline-secondary border-light-subtle text-body bg-body-secondary p-2 rounded-circle d-flex align-items-center fs-4"
+                            class="btn btn-outline-secondary border-light-subtle text-body bg-body-secondary p-2 rounded-circle d-flex align-items-center fs-4 overflow-hidden"
                             type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static"
                             aria-label="User">
-                            <span *ngIf="isDark" class="bi bi-person-circle" style="line-height: 0;"></span>
-                            <span *ngIf="!isDark" class="bi bi-person-circle" style="line-height: 0;"></span>
+                            <span *ngIf="!isLoggedIn" class="bi bi-person-circle" style="line-height: 0;"></span>
+                            <img *ngIf="isLoggedIn" src="{{user.avatarImage}}" alt="Avatar" class="img-fluid"
+                                style="max-width: 41px; max-height: 41px; aspect-ratio: 1/1; margin: -8px;" />
                             <!-- <span class="d-lg-none ms-2" id="user-panel">Tài khoản</span> -->
                         </button>
-                        <ul *ngIf="!isLoggedIn" class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end"
-                            style="min-width: 200px;" aria-labelledby="user-panel">
-                            <div class="card border-0 rounded-0 m-3" routerLink="/login" style="cursor: pointer;">
-                                <div class="d-flex gap-3 align-items-center bg-body-secondary rounded-1 p-2">
-                                    <img class="img-fluid rounded-circle"
-                                        style="max-width: 50px; max-height: 50px; aspect-ratio: 1/1;"
-                                        src="https://via.placeholder.com/100x100" alt="Avatar">
-                                    <h5 class="card-title m-0 text-wrapped">Khách</h5>
-                                </div>
-                                <div class="card-body p-0 text-center">
-                                    <p class="card-text">Đăng nhập hoặc đăng ký để sử dụng các tính năng đặc biệt</p>
-                                </div>
-                            </div>
-                            <li>
-                                <button type="button" class="dropdown-item d-flex align-items-center"
-                                    routerLink="/login">
-                                    Đăng nhập
-                                    <span class="bi bi-box-arrow-in-right ms-auto fs-3"></span>
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" class="dropdown-item d-flex align-items-center"
-                                    routerLink="/register">
-                                    Đăng ký
-                                    <span class="bi bi-pencil-square ms-auto fs-4"></span>
-                                </button>
-                            </li>
-                        </ul>
 
-                        <ul *ngIf="isLoggedIn" class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end"
-                            style="min-width: 200px;" aria-labelledby="user-panel">
-                            <div class="card border-0 rounded-0 m-3" routerLink="/login" style="cursor: pointer;">
-                                <div class="d-flex gap-3 align-items-center bg-body-secondary rounded-1 p-2">
-                                    <img class="img-fluid rounded-circle"
-                                        style="max-width: 50px; max-height: 50px; aspect-ratio: 1/1;"
-                                        src="https://via.placeholder.com/100x100" alt="Avatar">
-                                    <h5 class="card-title m-0 text-wrapped">{{user.firstname + ' ' + user.lastname}}
-                                    </h5>
+
+                        <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end" style="min-width: 200px;"
+                            aria-labelledby="user-panel">
+                            <ng-container *ngTemplateOutlet="isLoggedIn ? loggedInPanel : guestPanel">
+                            </ng-container>
+
+                            <ng-template #guestPanel>
+                                <div class="card border-0 rounded-0 m-3" routerLink="/login" style="cursor: pointer;">
+                                    <div class="d-flex gap-3 align-items-center bg-body-secondary rounded-1 p-2">
+                                        <span class="bi bi-person-circle"
+                                            style="font-size: 50px; line-height: 0;"></span>
+                                        <h5 class="card-title m-0 text-wrapped">Khách</h5>
+                                    </div>
+                                    <div class="card-body p-0 text-center">
+                                        <p class="card-text">Đăng nhập hoặc đăng ký để sử dụng các tính năng đặc biệt
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                            <li>
-                                <button type="button" class="dropdown-item d-flex align-items-center"
-                                    routerLink="/profile">
-                                    Thông tin
-                                    <span class="bi bi-person-circle ms-auto fs-4"></span>
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" class="dropdown-item d-flex align-items-center"
-                                    (click)="logOut()">
-                                    Đăng xuất
-                                    <span class="bi bi-box-arrow-out-right ms-auto fs-3"></span>
-                                </button>
-                            </li>
+                                <li>
+                                    <button type="button" class="dropdown-item d-flex align-items-center"
+                                        routerLink="/login">
+                                        Đăng nhập
+                                        <span class="bi bi-box-arrow-in-right ms-auto fs-4"></span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item d-flex align-items-center"
+                                        routerLink="/register">
+                                        Đăng ký
+                                        <span class="bi bi-person-add ms-auto fs-4"></span>
+                                    </button>
+                                </li>
+                            </ng-template>
+
+                            <ng-template #loggedInPanel>
+                                <div class="card border-0 rounded-0 m-3" routerLink="/profile" style="cursor: pointer;">
+                                    <div class="d-flex gap-3 align-items-center bg-body-secondary rounded-1 p-2">
+                                        <img class="img-fluid rounded-circle"
+                                            style="max-width: 50px; max-height: 50px; aspect-ratio: 1/1;"
+                                            src="{{user.avatarImage}}" alt="Avatar">
+                                        <h5 class="card-title m-0 text-wrapped">{{user.lastName + ' ' + user.firstName}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <li>
+                                    <button type="button" class="dropdown-item d-flex align-items-center"
+                                        routerLink="/profile">
+                                        Thông tin
+                                        <span class="bi bi-person-fill-gear ms-auto me-1 fs-4"></span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item d-flex align-items-center"
+                                        (click)="logOut()">
+                                        Đăng xuất
+                                        <span class="bi bi-box-arrow-right ms-auto fs-4"></span>
+                                    </button>
+                                </li>
+                            </ng-template>
                         </ul>
                     </li>
                 </ul>

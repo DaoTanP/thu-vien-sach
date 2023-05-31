@@ -13,9 +13,9 @@ export class HttpService
 
   constructor(private httpClient: HttpClient) { }
 
-  public authenticate (username: string, password: string): Observable<any>
+  public login (username: string, password: string): Observable<any>
   {
-    return this.httpClient.post(this.USER_API_URL + '/login', { username, password }, { observe: 'response', responseType: "text" });
+    return this.httpClient.post(this.USER_API_URL + '/login', { username, password }, /* { observe: 'response', responseType: "text" } */);
   }
 
   public usernameExists (username: string): Observable<any>

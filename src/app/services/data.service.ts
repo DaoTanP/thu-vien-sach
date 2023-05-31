@@ -22,4 +22,24 @@ export class DataService
   {
     this.data.set(key, value);
   }
+
+  removeData (key: string)
+  {
+    return this.data.delete(key);
+  }
+
+  getSession (key: string)
+  {
+    return sessionStorage.getItem(key);
+  }
+
+  setSession (key: string, value: string)
+  {
+    sessionStorage.setItem(key, value);
+  }
+
+  removeSession (key: string)
+  {
+    sessionStorage.removeItem(key);
+  }
 }
