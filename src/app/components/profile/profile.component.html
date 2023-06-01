@@ -2,10 +2,10 @@
   <div class="row">
     <div class="col-12 col-md-auto">
       <img
-        src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=128&q=80"
+        src="{{userInfo.avatarImage}} || https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=128&q=80"
         alt="avatar"
         class="m-auto m-lg-0 d-block rounded-circle img-fluid border border-5 border-light-subtle shadow-sm avatar">
-      <p class="h4 text-center mt-2">Sum Dolor</p>
+      <p class="h4 text-center mt-2">{{userInfo.lastName + " " + userInfo.firstName}}</p>
     </div>
     <div class="col">
       <ul class="nav nav-tabs" id="profileTab" role="tablist">
@@ -28,8 +28,12 @@
             data-bs-target="#infoModal">Chỉnh sửa</button>
           <div class="d-flex flex-column gap-3">
             <div class="row justify-content-center align-items-center g-2">
-              <div class="col-3">Họ và tên</div>
-              <div class="col">Lorem, ipsum.</div>
+              <div class="col-3">Họ đệm</div>
+              <div class="col">{{userInfo.lastName}}</div>
+            </div>
+            <div class="row justify-content-center align-items-center g-2">
+              <div class="col-3">Tên</div>
+              <div class="col">{{userInfo.firstName}}</div>
             </div>
             <div class="row justify-content-center align-items-center g-2">
               <div class="col-3">Giới tính</div>
@@ -64,14 +68,13 @@
                         <div class="col mb-4 w-100">
                           <label for="exampleFormControlInput1" class="form-label">Họ đệm</label>
                           <input type="text" class="form-control" formControlName="lastName"
-                            aria-describedby="helpLastNameId" [value]="userInfo?.lastName">
+                            aria-describedby="helpLastNameId" [value]="userInfo.lastName">
                         </div>
                         <div class="col mb-4 w-100">
                           <label for="exampleFormControlInput1" class="form-label">Tên</label>
                           <input type="text" class="form-control"
                             [class.is-invalid]="firstName.invalid && (firstName.dirty || firstName.touched)"
-                            formControlName="firstName" aria-describedby="helpFirstNameId"
-                            [value]="userInfo?.firstName">
+                            formControlName="firstName" aria-describedby="helpFirstNameId" [value]="userInfo.firstName">
                           <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
                             <div *ngIf="firstName.errors?.['required']">
                               <small id="helpFirstNameId">Tên không được bỏ trống</small>
