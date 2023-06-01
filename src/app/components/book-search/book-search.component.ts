@@ -13,7 +13,7 @@ import { HttpService } from 'src/app/services/http.service';
 export class BookSearchComponent
 {
   protected displayStyleHorizontal: boolean = false;
-  protected searchString: string | undefined = undefined;
+  protected searchString: string | undefined = '';
   protected pageNumber: number | undefined = undefined;
 
   bookListAsync: Observable<Book[]> = of([]);
@@ -36,21 +36,22 @@ export class BookSearchComponent
   {
     this.route.queryParams.subscribe(params =>
     {
-      this.searchString = params['q'];
-      if (this.searchString === undefined)
+      this.pageNumber = Number.parseInt(params['p']);
+
+      if (this.searchString !== params['q'])
       {
-        this.bookListAsync = this.httpService.getBooks();
-      } else
-      {
-        this.searchInput.setValue(this.searchString);
-        this.bookListAsync = this.httpService.searchBooks(this.searchString);
+        this.searchString = params['q'];
+        if (this.searchString === undefined)
+        {
+          this.bookListAsync = this.httpService.getBooks();
+        } else
+        {
+          this.searchInput.setValue(this.searchString);
+          this.bookListAsync = this.httpService.searchBooks(this.searchString);
+        }
+
+        this.getList();
       }
-
-      this.pageNumber = params['p'];
-      this.router.navigate(['/search'], { queryParams: { p: this.pageNumber }, queryParamsHandling: 'merge' })
-
-      this.getList();
-      this.updatePaginationInfo();
     });
   }
 
@@ -65,6 +66,7 @@ export class BookSearchComponent
     {
       this.bookList = books;
       this.totalItems = books.length;
+      this.resetPaginationInfo();
     });
   }
 
@@ -84,18 +86,26 @@ export class BookSearchComponent
 
   getPaginationInfo (e: any)
   {
+    if (e.currentPage > e.totalPages)
+      e.currentPage = e.totalPages;
     this.firstItemOnPage = (e.currentPage - 1) * e.itemsPerPage + 1;
     this.itemsPerPage = e.itemsPerPage;
     this.lastItemOnPage = e.currentPage * this.itemsPerPage;
     this.totalItems = e.totalItems;
     if (this.lastItemOnPage > this.totalItems)
       this.lastItemOnPage = this.totalItems;
+
+    if (this.pageNumber && this.pageNumber > e.totalPages)
+    {
+      this.pageNumber = e.totalPages;
+      this.router.navigate(['/search'], { queryParams: { p: this.pageNumber }, queryParamsHandling: 'merge' })
+    }
   }
 
-  updatePaginationInfo ()
+  resetPaginationInfo ()
   {
     this.firstItemOnPage = 1
-    this.lastItemOnPage = this.firstItemOnPage + this.itemsPerPage - 1;
+    this.lastItemOnPage = this.itemsPerPage;
     if (this.lastItemOnPage > this.totalItems)
       this.lastItemOnPage = this.totalItems
   }

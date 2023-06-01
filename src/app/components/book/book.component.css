@@ -1,4 +1,11 @@
-:is(.card:has(.stretched-link:hover), .card.link:hover) :has(img)::after {
+.book-cover-container {
+    /* overflow: hidden; */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background-color: var(--bs-body-bg);
+}
+
+:is(.card:has(.stretched-link:hover), .card.link:hover) .book-cover-container::after {
     content: '';
     position: absolute;
     top: 0;
@@ -6,11 +13,15 @@
     bottom: 0;
     left: 0;
     background-color: rgba(255, 255, 255, 0.15);
+    border-radius: inherit;
 }
-:is(.card:has(.stretched-link:hover), .card.link:hover) img {
+:is(.card:has(.stretched-link:hover), .card.link:hover) .book-cover-container {
     transform: scale(1.025);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 .card img {
+    /* rendered by GPU */
+    will-change: transform;
     height: 100%;
     width: auto;
     object-fit: cover;
@@ -33,10 +44,10 @@
 }
 .card :has(img) {
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 :is(.card:has(.stretched-link), .card.link) {
-    overflow: hidden;
+    /* overflow: hidden; */
     cursor: pointer;
 }
 .card.d-grid {
@@ -73,6 +84,11 @@
         --card-width: 10rem;
     }
 } */
+
+.card.horizontal:hover {
+    background-color: var(--bs-secondary-bg-subtle) !important;
+    border-radius: 1rem !important;
+}
 
 @keyframes scale {
     0% {

@@ -11,11 +11,11 @@
     <div class="card-body p-lg-4">
       <h4 class="card-title mb-4">Đăng ký</h4>
       <div class="d-flex flex-column gap-3 justify-content-center" id="form-wrapper">
-        <button class="btn btn-secondary rounded-pill py-2 d-flex">
+        <button class="btn bg-body-secondary focus-ring focus-ring-primary rounded-pill py-2 d-flex">
           <i class="bi bi-google"></i>
           <span class="flex-grow-1">Đăng ký bằng Google</span>
         </button>
-        <button class="btn btn-secondary rounded-pill py-2 d-flex">
+        <button class="btn bg-body-secondary focus-ring focus-ring-primary rounded-pill py-2 d-flex">
           <i class="bi bi-facebook"></i>
           <span class="flex-grow-1">Đăng ký bằng Facebook</span>
         </button>
@@ -27,38 +27,45 @@
       </div>
       <form [formGroup]="registerForm" (ngSubmit)="register()">
         <div class="form-group">
-          <input type="text" class="form-control" id="displayName" formControlName="displayName"
-            placeholder="Tên hiển thị">
+          <input type="text" class="form-control"
+            [class.is-invalid]="displayName.invalid && (displayName.dirty || displayName.touched)" id="displayName"
+            formControlName="displayName" placeholder="Tên hiển thị">
           <small *ngIf="displayName.invalid && (displayName.dirty || displayName.touched)" class="text-danger">
-            <span *ngIf="displayName.errors?.['required']">Tên hiển thị không được để trống</span>
-            <span *ngIf="displayName.errors?.['minlength']">Tên hiển thị phải chứa ít nhất {{
-              displayName.errors?.['minlength'].requiredLength }} kí tự</span>
+            <div *ngIf="displayName.errors?.['required']">Tên hiển thị không được để trống</div>
+            <div *ngIf="displayName.errors?.['minlength']">Tên hiển thị phải chứa ít nhất {{
+              displayName.errors?.['minlength'].requiredLength }} kí tự</div>
           </small>
         </div>
         <div class="form-group">
-          <input type="text" class="form-control" id="username" formControlName="username" placeholder="Tên đăng nhập">
+          <input type="text" class="form-control"
+            [class.is-invalid]="username.invalid && (username.dirty || username.touched)" id="username"
+            formControlName="username" placeholder="Tên đăng nhập">
           <small *ngIf="username.invalid && (username.dirty || username.touched)" class="text-danger">
-            <span *ngIf="username.errors?.['exists']">Tên đăng nhập đã tồn tại</span>
-            <span *ngIf="username.errors?.['required']">Tên đăng nhập không được để trống</span>
-            <span *ngIf="username.errors?.['minlength']">Tên đăng nhập phải chứa ít nhất {{
-              username.errors?.['minlength'].requiredLength }} kí tự</span>
+            <div *ngIf="username.errors?.['exists']">Tên đăng nhập đã tồn tại</div>
+            <div *ngIf="username.errors?.['required']">Tên đăng nhập không được để trống</div>
+            <div *ngIf="username.errors?.['minlength']">Tên đăng nhập phải chứa ít nhất {{
+              username.errors?.['minlength'].requiredLength }} kí tự</div>
           </small>
         </div>
         <div class="form-group">
-          <input type="password" class="form-control" id="password" formControlName="password" placeholder="Mật khẩu">
+          <input type="password" class="form-control"
+            [class.is-invalid]="password.invalid && (password.dirty || password.touched)" id="password"
+            formControlName="password" placeholder="Mật khẩu">
           <small *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
-            <span *ngIf="password.errors?.['required']">Mật khẩu không được để trống</span>
-            <span *ngIf="password.errors?.['minlength']">Mật khẩu phải chứa ít nhất {{
-              password.errors?.['minlength'].requiredLength }} kí tự</span>
+            <div *ngIf="password.errors?.['required']">Mật khẩu không được để trống</div>
+            <div *ngIf="password.errors?.['minlength']">Mật khẩu phải chứa ít nhất {{
+              password.errors?.['minlength'].requiredLength }} kí tự</div>
           </small>
         </div>
         <div class="form-group">
-          <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword"
-            placeholder="Nhập lại mật khẩu">
-          <small *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
+          <input type="password" class="form-control"
+            [class.is-invalid]="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched) || (password.value !== confirmPassword.value && (confirmPassword.dirty || confirmPassword.touched) && (password.dirty || password.touched))"
+            id="confirmPassword" formControlName="confirmPassword" placeholder="Nhập lại mật khẩu">
+          <small
+            *ngIf="(confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)) || (password.value !== confirmPassword.value && (confirmPassword.dirty || confirmPassword.touched) && (password.dirty || password.touched))"
             class="text-danger">
-            <span *ngIf="confirmPassword.errors?.['required']">Không được bỏ trống trường này</span>
-            <span *ngIf="confirmPassword.errors?.['notMatch']"> Mật khẩu không khớp</span>
+            <div *ngIf="confirmPassword.errors?.['required']">Không được bỏ trống trường này</div>
+            <div *ngIf="registerForm.errors?.['notMatch']"> Mật khẩu không khớp</div>
           </small>
         </div>
         <div class="form-check mb-3">

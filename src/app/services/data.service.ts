@@ -42,4 +42,19 @@ export class DataService
   {
     sessionStorage.removeItem(key);
   }
+
+  getLocalStorage (key: string)
+  {
+    return localStorage.getItem(key);
+  }
+
+  setLocalStorage (key: string, value: string)
+  {
+    localStorage.setItem(key, value);
+  }
+
+  removeLocalStorage (key: string)
+  {
+    localStorage.removeItem(key);
+  }
 }

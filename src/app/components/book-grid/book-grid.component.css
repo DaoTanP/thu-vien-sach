@@ -40,6 +40,11 @@
     margin-inline-end: -0.25rem; */
     gap: 1.5rem 0.5rem;
 }
+@media (min-width: 1px) {
+    #items-container {
+        --card-width: 6rem;
+    }
+}
 @media (min-width: 992px) {
     #items-container {
         --card-width: 8rem;
@@ -53,6 +58,6 @@
 
 @media (min-width: 1400px) {
     #items-container {
-        --card-width: 10rem;
+        --card-width: 9rem;
     }
 }

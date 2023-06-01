@@ -1,20 +1,20 @@
 .container {
-    --height: 200px;
+    --avatar-height: 20rem;
 }
 
 .profile-banner {
-    max-height: var(--height);
+    max-height: var(--avatar-height);
     object-fit: cover;
     object-position: center;
 }
 
 .profile-main {
-    margin-top: calc(var(--height)/-3);
+    margin-top: calc(var(--avatar-height)/-3);
 }
 
 .avatar {
-    height: calc(var(--height)/1.5);
-    width: calc(var(--height)/1.5);
+    height: calc(var(--avatar-height)/1.5);
+    width: calc(var(--avatar-height)/1.5);
     object-fit: cover;
     object-position: center;
     aspect-ratio: 1/1;
@@ -31,6 +31,13 @@
     --bs-nav-tabs-link-active-bg: var(--bs-body-bg);
     --bs-nav-tabs-link-active-border-color: var(--bs-body-bg) var(--bs-body-bg) var(--bs-nav-link-color);
     border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+}
+
+.nav-tabs>* {
+    white-space: nowrap;
 }
 
 .nav-tabs .nav-link {

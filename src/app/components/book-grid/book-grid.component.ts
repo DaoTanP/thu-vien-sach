@@ -13,21 +13,22 @@ export default class BookGridComponent implements OnInit
   @Input() column: number = 6;
   @Input('data') books: Book[] = [];
   @Input() isCardHorizontal: boolean = false;
+  @Input() currentPage: number = 1;
 
   @Output() onInit = new EventEmitter();
   @Output() onChangePage = new EventEmitter();
 
-  current: number = 1
+  current: number = this.currentPage || 1;
 
   public items = this.books;
-  public itemsToDisplay: any[] = []
-  public perPage = this.row * this.column
-  public total = Math.ceil(this.items.length / this.perPage)
-  public pages = this.getPages(this.current, this.total)
+  public itemsToDisplay: any[] = [];
+  public perPage = this.row * this.column;
+  public total = Math.ceil(this.items.length / this.perPage);
+  public pages = this.getPages(this.current, this.total);
 
   constructor()
   {
-    this.itemsToDisplay = this.paginate(this.current, this.perPage)
+    this.itemsToDisplay = this.paginate(this.current, this.perPage);
   }
 
   ngOnInit ()
@@ -47,32 +48,33 @@ export default class BookGridComponent implements OnInit
     // {
     // }
 
-    // if (changes["current"] || changes["total"])
-    // {
-    //   this.pages = this.getPages(this.current, this.total);
-    // }
+    if (changes["currentPage"])
+    {
+      console.log("change current page: ", changes["currentPage"].previousValue, changes["currentPage"].currentValue);
+      this.current = this.currentPage <= this.total ? this.currentPage : this.total;
+      this.recalculate();
+    }
   }
 
   public onGoTo (page: number): void
   {
     this.changePage(page);
-    this.onChangePage.emit({ totalPages: this.total, currentPage: this.current, itemsPerPage: this.perPage, itemsOnDisplay: this.itemsToDisplay.length, totalItems: this.items.length });
   }
   public onNext (): void
   {
     this.changePage(this.current + 1);
-    this.onChangePage.emit({ totalPages: this.total, currentPage: this.current, itemsPerPage: this.perPage, itemsOnDisplay: this.itemsToDisplay.length, totalItems: this.items.length });
   }
   public onPrevious (): void
   {
     this.changePage(this.current - 1);
-    this.onChangePage.emit({ totalPages: this.total, currentPage: this.current, itemsPerPage: this.perPage, itemsOnDisplay: this.itemsToDisplay.length, totalItems: this.items.length });
   }
   public changePage (page: number): void
   {
     this.current = page;
     this.itemsToDisplay = this.paginate(this.current, this.perPage);
     this.pages = this.getPages(this.current, this.total);
+    this.onChangePage.emit({ totalPages: this.total, currentPage: this.current, itemsPerPage: this.perPage, itemsOnDisplay: this.itemsToDisplay.length, totalItems: this.items.length });
+    console.log({ totalPages: this.total, currentPage: this.current, itemsPerPage: this.perPage, itemsOnDisplay: this.itemsToDisplay.length, totalItems: this.items.length });
   }
   private getPages (current: number, total: number): number[]
   {
@@ -81,7 +83,7 @@ export default class BookGridComponent implements OnInit
       return Array.from({ length: total }, (e, i) => i + 1)
     }
 
-    // -1 means other page numbers are abreviated
+    // -1 means other page numbers in between are abreviated
     if (current > 3 && current <= total - 3)
     {
       return [1, -1, current - 1, current, current + 1, -1, total]
@@ -94,6 +96,7 @@ export default class BookGridComponent implements OnInit
 
     return [1, 2, 3, 4, -1, total]
   }
+
   public paginate (current: number, perPage: number): any[]
   {
     return [...this.items.slice((current - 1) * perPage).slice(0, perPage)]

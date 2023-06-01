@@ -2,10 +2,11 @@
 </ng-container>
 
 <ng-template #horizontalCard>
-    <div class="card p-0 rounded-0 border-0 bg-body text-body link w-100 d-grid" title="{{book.title}}"
+    <div class="card p-0 rounded-0 border-0 bg-body text-body link w-100 d-grid horizontal" title="{{book.title}}"
         routerLink="{{href || '/book/' + this.book.id}}">
-        <div>
-            <img src="{{book.imgUrl}}" class="img-fluid" alt="book cover" loading="lazy" style="object-fit: contain;">
+        <div class="book-cover-container">
+            <img src="{{book.imgUrl || 'https://dummyimage.com/400x600/dddddd/aaa&text=No+image'}}" class="img-fluid"
+                alt="book cover" loading="lazy" style="object-fit: contain;">
         </div>
         <div class="card-body pe-2">
             <h6 class="card-title text-wrapped max-line-2" title="{{book.title}}">{{book.title}}</h6>
@@ -20,7 +21,8 @@
     <!-- style="width: 12rem;" -->
     <div class="card p-0 border-0 bg-body text-body link w-sm-100 w-auto"
         routerLink="{{href || '/book/' + this.book.id}}">
-        <div class="rounded-2" title="{{book.title}}"><img src="{{book.imgUrl}}"
+        <div class="rounded-2 book-cover-container" title="{{book.title}}"><img
+                src="{{book.imgUrl || 'https://dummyimage.com/400x600/ddd/aaa&text=No+image'}}"
                 class="card-img-top img-fluid rounded-2" alt="book cover" loading="lazy">
         </div>
         <div class="card-body p-0">
