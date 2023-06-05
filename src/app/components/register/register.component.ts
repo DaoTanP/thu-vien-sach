@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
+import { User } from 'src/app/models/user';
+import { AlertService, AlertType } from 'src/app/services/alert.service';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { DataService } from 'src/app/services/data.service';
 import { HttpService } from 'src/app/services/http.service';
 
@@ -28,7 +31,11 @@ export class RegisterComponent
     agreement: this.agreement
   }, [this.formGroupMatchValidator('confirmPassword', 'password')]);
 
-  constructor(private httpService: HttpService, private dataService: DataService, private router: Router) { }
+  constructor(private httpService: HttpService, private dataService: DataService, private authGuardService: AuthGuardService, private router: Router, private alertService: AlertService)
+  {
+    if (authGuardService.isLoggedIn)
+      router.navigate(['home']);
+  }
 
   public matchValidator (controlToMatch: AbstractControl<any, any>): ValidatorFn
   {
@@ -69,12 +76,16 @@ export class RegisterComponent
 
   public register ()
   {
-    this.clearAlert();
+    this.alertService.clearAlert();
     this.waiting = true;
     const displayName = this.registerForm.value.displayName || '';
     const username = this.registerForm.value.username || '';
     const password = this.registerForm.value.password || '';
-    this.httpService.register(displayName, username, password).subscribe({
+    const user = new User();
+    user.firstName = displayName;
+    user.username = username;
+    user.password = password;
+    this.httpService.register(user).subscribe({
       next: (res) =>
       {
         this.waiting = false;
@@ -87,51 +98,21 @@ export class RegisterComponent
         switch (err.status)
         {
           case 409:
-            this.appendAlert('Tên đăng nhập đã tồn tại');
+            this.alertService.appendAlert('Tên đăng nhập đã tồn tại', AlertType.danger, 0, 'form-wrapper');
             break;
 
           case 400:
-            this.appendAlert('Thông tin không hợp lệ');
+            this.alertService.appendAlert('Thông tin không hợp lệ', AlertType.danger, 0, 'form-wrapper');
             break;
 
           case 0:
-            this.appendAlert('Đã xảy ra sự cố với mạng');
+            this.alertService.appendAlert('Đã xảy ra sự cố với mạng', AlertType.danger, 0, 'form-wrapper');
             break;
 
           default:
             break;
         }
       }
-    });
-  }
-
-  public appendAlert = (message: string, type: string = 'danger') =>
-  {
-    let alertPlaceholder = document.getElementById('form-wrapper');
-    if (alertPlaceholder == null)
-      return;
-
-    const wrapper = document.createElement('div')
-    wrapper.innerHTML = [
-      `<div class="alert alert-${type} alert-dismissible m-0" role="alert">`,
-      `   <div>${message}</div>`,
-      '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-      '</div>'
-    ].join('')
-
-    alertPlaceholder.prepend(wrapper);
-  }
-
-  public clearAlert ()
-  {
-    let alertPlaceholder = document.getElementById('form-wrapper');
-    if (alertPlaceholder == null)
-      return;
-
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(element =>
-    {
-      element.remove();
     });
   }
 }

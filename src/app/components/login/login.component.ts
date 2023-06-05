@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/user';
+import { AlertService, AlertType } from 'src/app/services/alert.service';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { DataService } from 'src/app/services/data.service';
 import { HttpService } from 'src/app/services/http.service';
 
@@ -20,19 +23,25 @@ export class LoginComponent
     username: this.username,
     password: this.password,
   });
-  constructor(private httpService: HttpService, private dataService: DataService, private router: Router)
+  constructor(private httpService: HttpService, private dataService: DataService, private authGuardService: AuthGuardService, private router: Router, private alertService: AlertService)
   {
-
+    if (authGuardService.isLoggedIn)
+      router.navigate(['home']);
   }
 
   public login (): void
   {
-    this.clearAlert();
+    this.alertService.clearAlert();
     this.waiting = true;
 
     const username = this.loginForm.value.username || '';
     const password = this.loginForm.value.password || '';
-    this.httpService.login(username, password).subscribe({
+    const user = new User();
+    user.username = username;
+    user.password = password;
+    console.log(user);
+
+    this.httpService.login(user).subscribe({
       next: res =>
       {
         this.waiting = false;
@@ -44,47 +53,18 @@ export class LoginComponent
         switch (err.status)
         {
           case 404:
-            this.appendAlert('Tài khoản không tồn tại, kiểm tra lại tên đăng nhập hoặc mật khẩu');
+            this.alertService.appendAlert('Tài khoản không tồn tại, kiểm tra lại tên đăng nhập hoặc mật khẩu', AlertType.danger, 0, 'form-wrapper');
             break;
 
           case 0:
-            this.appendAlert('Đã xảy ra sự cố với mạng');
+            this.alertService.appendAlert('Đã xảy ra sự cố với mạng', AlertType.danger, 0, 'form-wrapper');
             break;
 
           default:
+            this.alertService.appendAlert('Đã xảy ra lỗi, vui lòng thử lại sau', AlertType.danger, 0, 'form-wrapper');
             break;
         }
       }
-    });
-  }
-
-  public appendAlert = (message: string, type: string = 'danger') =>
-  {
-    let alertPlaceholder = document.getElementById('form-wrapper');
-    if (alertPlaceholder == null)
-      return;
-
-    const alert = document.createElement('div');
-    alert.className = `alert alert-${type} alert-dismissible mb-2`;
-    alert.role = 'alert';
-    alert.innerHTML = [
-      `   <div>${message}</div>`,
-      '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-    ].join('');
-
-    alertPlaceholder.prepend(alert);
-  }
-
-  public clearAlert ()
-  {
-    let alertPlaceholder = document.getElementById('form-wrapper');
-    if (alertPlaceholder == null)
-      return;
-
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(element =>
-    {
-      element.remove();
     });
   }
 }

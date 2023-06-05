@@ -86,8 +86,9 @@
 } */
 
 .card.horizontal:hover {
-    background-color: var(--bs-secondary-bg-subtle) !important;
-    border-radius: 1rem !important;
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-secondary-bg-rgb), var(--bs-bg-opacity)) !important;
+    border-radius: 0.5rem !important;
 }
 
 @keyframes scale {
@@ -99,21 +100,10 @@
         box-shadow: rgba(0, 0, 0, 0.3) 1px 2px 3px 1px;
     }
     30% {
-        transform: scale(1.9, 2.1);
+        transform: scale(1.2, 1.1);
         box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 3px 1px;
     }
-    50% {
-        transform: scale(2, 2);
-    }
-    57% {
-        transform: scale(2, 2);
-        box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px 1px;
-    }
-    64% {
-        transform: scale(2, 2);
-    }
-    100% {
-        transform: scale(2, 2);
-        box-shadow: rgba(0, 0, 0, 0.2) 1px 2px 7px 1px;
+    50%, 100% {
+        transform: scale(1.2, 1.2);
     }
 }

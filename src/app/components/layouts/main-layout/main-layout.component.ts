@@ -1,4 +1,6 @@
 import { Component, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -13,10 +15,11 @@ export class MainLayoutComponent
   protected getThemeFunction: any = undefined;
   protected isDark: boolean = false;
   protected isScrolled: boolean = false;
-  protected isLoggedIn: boolean = false;
   protected user: any;
 
-  constructor(private dataService: DataService)
+  get isLoggedIn () { return this.authGuardService.isLoggedIn };
+
+  constructor(private dataService: DataService, private authGuardService: AuthGuardService, private router: Router)
   {
     this.switchThemeFunction = this.dataService.getData('switchTheme');
     this.setThemeFunction = this.dataService.getData('setTheme');
@@ -27,9 +30,7 @@ export class MainLayoutComponent
     if (typeof sessionData === 'string')
     {
       this.user = JSON.parse(sessionData);
-      this.isLoggedIn = true;
       console.log(this.user);
-
     }
   }
 
@@ -59,7 +60,11 @@ export class MainLayoutComponent
   logOut ()
   {
     this.dataService.removeSession('user');
-    this.isLoggedIn = false;
     this.user = undefined;
+
+    let navigateAfterLogOut = this.dataService.getData('navigateAfterLogOut');
+
+    if (navigateAfterLogOut)
+      navigateAfterLogOut(this.router);
   }
 }

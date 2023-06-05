@@ -5,8 +5,7 @@
     <div class="card p-0 rounded-0 border-0 bg-body text-body link w-100 d-grid horizontal" title="{{book.title}}"
         routerLink="{{href || '/book/' + this.book.id}}">
         <div class="book-cover-container">
-            <img src="{{book.imgUrl || 'https://dummyimage.com/400x600/dddddd/aaa&text=No+image'}}" class="img-fluid"
-                alt="book cover" loading="lazy" style="object-fit: contain;">
+            <img src="{{book.imgUrl}}" class="img-fluid" alt="book cover" loading="lazy" style="object-fit: contain;">
         </div>
         <div class="card-body pe-2">
             <h6 class="card-title text-wrapped max-line-2" title="{{book.title}}">{{book.title}}</h6>
