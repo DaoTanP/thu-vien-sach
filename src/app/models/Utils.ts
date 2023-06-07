@@ -1,4 +1,4 @@
-export function convertToJavaScriptDate (value: string | null): string | null
+export function convertCSToReadableDate (value: string | null): string | null
 {
     if (!value)
         return null;
@@ -11,4 +11,26 @@ export function convertToJavaScriptDate (value: string | null): string | null
 
     return dt.toLocaleDateString();
     // return dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
+}
+
+export function convertJSToCSDate (value: string | null): string | null
+{
+    if (!value)
+        return null;
+
+    return `/Date(${Date.parse(value)}+0700)/`;
+}
+
+// input value format: dd/MM/yyyy
+// output value format: yyyy-MM-dd
+export function convertToJSDate (value: string | null): string | null
+{
+    if (!value)
+        return null;
+
+    const pattern = /(\d{2})\/(\d{1,2})\/(\d{4})/;
+    const dt = new Date(value.replace(pattern, '$3-$2-$1'));
+
+    const date = dt.toISOString().substring(0, 10);
+    return date;
 }

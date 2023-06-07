@@ -10,7 +10,7 @@ export class BookScrollListComponent
 {
   @Input() title: string = 'Book Scroll List';
   @Input() href: string = '';
-  @Input() bookList: Book[] = [
+  @Input('data') bookList: Book[] = [
     new Book(undefined, 'Bramble', 'https://cdn1.epicgames.com/spt-assets/ab87c9bafafd49fdaeb1069044a8d105/bramble-the-mountain-king-gs19a.png?h=480&quality=medium&resize=1&w=360'),
     new Book(undefined, 'Watch Dogs: Legion Standard Edition', 'https://cdn1.epicgames.com/0a84818055e740a7be21a2e5b6162703/offer/WatchDogs_Legion_Store_Portrait_1200x1600-1200x1600-a6b2d4cce489aeeb87bad4a6db168bed.jpg?h=480&quality=medium&resize=1&w=360'),
     new Book(undefined, 'Poker Club', 'https://cdn1.epicgames.com/spt-assets/560813614bba464385b56f43524d17f0/download-poker-club-offer-16wlj.jpg?h=480&quality=medium&resize=1&w=360'),

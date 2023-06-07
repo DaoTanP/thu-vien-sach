@@ -1,5 +1,5 @@
 // const defaultAvatarImageUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-import { convertToJavaScriptDate } from "./Utils";
+import { convertCSToReadableDate } from "./Utils";
 
 export class User
 {
@@ -20,7 +20,7 @@ export class User
         public favoriteBooks: any = [],
     )
     {
-        this.dateOfBirth = convertToJavaScriptDate(dateOfBirth);
+        this.dateOfBirth = convertCSToReadableDate(dateOfBirth);
     }
 
 
@@ -31,7 +31,7 @@ export class User
         this.password = v.password;
         this.lastName = v.lastName;
         this.firstName = v.firstName;
-        this.dateOfBirth = convertToJavaScriptDate(v.dateOfBirth);
+        this.dateOfBirth = convertCSToReadableDate(v.dateOfBirth);
         this.gender = v.gender;
         this.address = v.address;
         this.email = v.email;

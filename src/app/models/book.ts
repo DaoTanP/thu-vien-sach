@@ -1,4 +1,4 @@
-import { convertToJavaScriptDate } from "./Utils";
+import { convertCSToReadableDate } from "./Utils";
 
 export class Book
 {
@@ -6,7 +6,7 @@ export class Book
         public id: string = '',
         public title: string = '',
         public category: string = '',
-        public imgUrl: string = '',
+        public image: string = '',
         public author: string = '',
         public publisher: string = '',
         public publishDate: string | null = null,
@@ -14,9 +14,9 @@ export class Book
         public numberOfPages: number = 0,
     )
     {
-        this.publishDate = convertToJavaScriptDate(publishDate);
+        this.publishDate = convertCSToReadableDate(publishDate);
 
-        if (!imgUrl || imgUrl === '')
-            imgUrl = 'https://dummyimage.com/400x600/dddddd/aaa&text=No+image';
+        if (!image || image === '')
+            image = 'https://dummyimage.com/400x600/dddddd/aaa&text=No+image';
     }
 }

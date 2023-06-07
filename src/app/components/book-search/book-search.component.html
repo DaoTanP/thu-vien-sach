@@ -51,7 +51,7 @@
                 <div style="object-fit: cover; object-position: center; overflow: hidden;">
                     <div class="bi bi-search text-center" style="font-size: 5rem;"></div>
                 </div>
-                <h3 class="text-center text-break">Không tìm thấy kết quả cho "{{searchString}}"</h3>
+                <h3 class="text-center text-break">Không tìm thấy kết quả cho "{{searchModel.bookTitle}}"</h3>
             </div>
         </ng-template>
 
@@ -59,8 +59,8 @@
             <div class="container p-2 rounded-2 z-0" style="top: 4rem;">
                 <form [formGroup]="searchForm" class="mb-3" (ngSubmit)="search()">
                     <div class="mb-3">
-                        <input [formControl]="searchInput" type="text" class="form-control border-2"
-                            placeholder="Nhập nội dung tìm kiếm" aria-describedby="search">
+                        <input formControlName="bookTitle" type="text" class="form-control border-2"
+                            placeholder="Nhập tên sách cần tìm">
                     </div>
                     <div class="mb-3">
                         <button class="btn btn-primary d-block w-100 mb-2" type="submit">
@@ -75,30 +75,21 @@
                         <div class="accordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="filter1-header">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#filter1" aria-expanded="true" aria-controls="filter1">
+                                    <button class="accordion-button focus-ring focus-ring-primary" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#filter1" aria-expanded="true"
+                                        aria-controls="filter1">
                                         Thể loại
                                     </button>
                                 </h2>
                                 <div id="filter1" class="accordion-collapse collapse show"
                                     aria-labelledby="filter1-header">
                                     <div class="accordion-body d-flex flex-column gap-1">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="filter1A">
-                                            <label class="form-check-label" for="filter1A">
-                                                Văn học
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="filter1B">
-                                            <label class="form-check-label" for="filter1B">
-                                                Kinh tế
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="filter1C">
-                                            <label class="form-check-label" for="filter1C">
-                                                Công nghệ
+                                        <div *ngFor="let c of categories | async; index as i" class="form-check">
+                                            <input class="form-check-input" formArrayName="categories" [value]="c.name"
+                                                (change)="onCategoryCheckboxChange($event)" type="checkbox"
+                                                id="c-{{i}}">
+                                            <label class="form-check-label" for="c-{{i}}">
+                                                {{c.name}}
                                             </label>
                                         </div>
                                     </div>
@@ -106,58 +97,58 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="filter2-header">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#filter2" aria-expanded="true" aria-controls="filter2">
-                                        Accordion Item #2
+                                    <button class="accordion-button focus-ring focus-ring-primary" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#filter2" aria-expanded="true"
+                                        aria-controls="filter2">
+                                        Tác giả
                                     </button>
                                 </h2>
                                 <div id="filter2" class="accordion-collapse collapse show"
                                     aria-labelledby="filter2-header">
                                     <div class="accordion-body">
-                                        <div id="filter2" class="accordion-collapse collapse show"
-                                            aria-labelledby="filter1-header">
-                                            <div class="accordion-body d-flex flex-column gap-1">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        id="filter1A">
-                                                    <label class="form-check-label" for="filter1A">
-                                                        Văn học
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        id="filter1B">
-                                                    <label class="form-check-label" for="filter1B">
-                                                        Kinh tế
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        id="filter1C">
-                                                    <label class="form-check-label" for="filter1C">
-                                                        Công nghệ
-                                                    </label>
-                                                </div>
-                                            </div>
+                                        <div class="mb-3 w-100">
+                                            <input type="text" id="search-author" formControlName="author"
+                                                placeholder="Tên tác giả" class="form-control bg-body-secondary">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="filter3-header">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#filter3" aria-expanded="true" aria-controls="filter3">
-                                        Năm xuất bản
+                                    <button class="accordion-button focus-ring focus-ring-primary" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#filter3" aria-expanded="true"
+                                        aria-controls="filter3">
+                                        Nhà xuất bản
                                     </button>
                                 </h2>
                                 <div id="filter3" class="accordion-collapse collapse show"
                                     aria-labelledby="filter3-header">
+                                    <div class="accordion-body">
+                                        <div class="mb-3 w-100">
+                                            <input type="text" id="search-publisher" formControlName="publisher"
+                                                placeholder="Tên nhà xuất bản" class="form-control bg-body-secondary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="filter4-header">
+                                    <button class="accordion-button focus-ring focus-ring-primary" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#filter4" aria-expanded="true"
+                                        aria-controls="filter4">
+                                        Năm xuất bản
+                                    </button>
+                                </h2>
+                                <div id="filter4" class="accordion-collapse collapse show"
+                                    aria-labelledby="filter4-header">
                                     <div class="accordion-body d-flex gap-1 align-items-center">
-                                        <input type="number" [formControl]="publishedFrom" class="form-control"
-                                            id="publishedFrom" min="1970" max="2023" placeholder="Từ năm">
+                                        <input type="number" formControlName="publishedFrom"
+                                            class="form-control bg-body-secondary" id="publishedFrom" min="1970"
+                                            max="2023" placeholder="Từ năm">
                                         <span class="bi bi-dash"></span>
-                                        <input type="number" [formControl]="publishedTo" class="form-control"
-                                            id="publishedTo" min="1970" max="2023" placeholder="Đến năm">
+                                        <input type="number" formControlName="publishedTo"
+                                            class="form-control bg-body-secondary" id="publishedTo" min="1970"
+                                            max="2023" placeholder="Đến năm">
                                     </div>
                                 </div>
                             </div>

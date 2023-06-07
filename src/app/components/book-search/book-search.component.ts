@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Book } from 'src/app/models/book';
+import { SearchModel } from 'src/app/models/search-model';
 import { HttpService } from 'src/app/services/http.service';
 
 @Component({
@@ -12,9 +13,10 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class BookSearchComponent
 {
+  protected searchModel: SearchModel = new SearchModel();
   protected displayStyleHorizontal: boolean = false;
-  protected searchString: string | undefined = '';
   protected pageNumber: number | undefined = undefined;
+  protected categories: Observable<any[]> = of([]);
 
   bookListAsync: Observable<Book[]> = of([]);
   protected bookList: Book[] = [];
@@ -23,36 +25,52 @@ export class BookSearchComponent
   protected totalItems: number = 0;
   protected itemsPerPage: number = 0;
 
-  protected searchInput: FormControl = new FormControl(null);
-  protected publishedFrom: FormControl = new FormControl(null);
-  protected publishedTo: FormControl = new FormControl(null);
   protected searchForm: FormGroup = new FormGroup({
-    searchInput: this.searchInput,
-    publishedFrom: this.publishedFrom,
-    publishedTo: this.publishedTo,
+    bookTitle: new FormControl(null),
+    categories: new FormArray([]),
+    author: new FormControl(null),
+    publisher: new FormControl(null),
+    publishedFrom: new FormControl(null),
+    publishedTo: new FormControl(null),
   });
 
   constructor(private httpService: HttpService, private router: Router, private route: ActivatedRoute)
   {
-    this.route.queryParams.subscribe(params =>
+    // this.route.queryParams
+    this.route.queryParamMap.subscribe(params =>
     {
-      this.pageNumber = Number.parseInt(params['p']);
-
-      if (this.searchString !== params['q'])
+      this.pageNumber = Number.parseInt(params.get('p') || '');
+      let hasParams = false;
+      let changed = false;
+      hasParams = Object.keys(params).some(param => param !== 'p');
+      if (!hasParams)
       {
-        this.searchString = params['q'];
-        if (this.searchString === undefined)
-        {
-          this.bookListAsync = this.httpService.getBooks();
-        } else
-        {
-          this.searchInput.setValue(this.searchString);
-          this.bookListAsync = this.httpService.searchBooks(this.searchString);
-        }
+        this.bookListAsync = this.httpService.searchBooks(this.searchModel);
+        this.getList();
+        return;
+      }
 
+      const sm = new SearchModel(params.get('q'), params.getAll('c'), params.get('a'), params.get('pub'), params.get('pf'), params.get('pt'));
+      for (const key in sm)
+      {
+        if (this.searchModel[key] !== sm[key])
+        {
+          this.searchModel[key] = sm[key];
+          changed = true;
+        }
+      }
+
+      if (changed)
+      {
+        this.bookListAsync = this.httpService.searchBooks({ ...this.searchModel });
         this.getList();
       }
     });
+
+    const { category, ...formValue } = this.searchModel;
+    this.searchForm.patchValue(formValue);
+
+    this.categories = httpService.getBookCategories();
   }
 
   reset ()
@@ -64,7 +82,8 @@ export class BookSearchComponent
   {
     this.bookListAsync.subscribe(books =>
     {
-      this.bookList = books;
+      this.bookList = books.map((book: any) => new Book(book.id, book.title, book.category.name, book.image, book.author.name, book.publisher.name, book.publishDate, book.overview, book.numberOfPages));
+
       this.totalItems = books.length;
       this.resetPaginationInfo();
     });
@@ -72,11 +91,34 @@ export class BookSearchComponent
 
   search ()
   {
-    let query = this.searchForm.value.searchInput;
-    if (!query || query == '')
-      return;
+    let query = this.searchForm.value;
 
-    this.router.navigate(['/search'], { queryParams: { q: this.searchForm.value.searchInput } });
+    console.log(query.categories);
+
+    const queryParams = {
+      q: query.bookTitle,
+      c: query.categories,
+      a: query.author,
+      pub: query.publisher,
+      pf: query.publishedFrom,
+      pt: query.publishedTo,
+      p: 1,
+    }
+
+    this.router.navigate(['/search'], { queryParams: queryParams });
+  }
+
+  onCategoryCheckboxChange (event: any)
+  {
+    const selectedCategories = (this.searchForm.get('categories') as FormArray);
+    if (event.target.checked)
+    {
+      selectedCategories.push(new FormControl(event.target.value));
+    } else
+    {
+      const index = selectedCategories.controls.findIndex(x => x.value === event.target.value);
+      selectedCategories.removeAt(index);
+    }
   }
 
   onChangePage (e: any)

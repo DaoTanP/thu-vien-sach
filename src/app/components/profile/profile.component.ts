@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { convertJSToCSDate, convertToJSDate } from 'src/app/models/Utils';
 import { Book } from 'src/app/models/book';
 import { User } from 'src/app/models/user';
 import { AlertService, AlertType } from 'src/app/services/alert.service';
@@ -58,14 +59,7 @@ export class ProfileComponent
 
     this.editInfoForm.setValue({ ...userInfo });
 
-    const dob = (this.user.dateOfBirth || '');
-    console.log(this.user.dateOfBirth);
-
-    var pattern = /(\d{2})\/(\d{1,2})\/(\d{4})/;
-    var dt = new Date(dob.replace(pattern, '$3-$2-$1'));
-
-    const date = dt.toISOString().substring(0, 10);
-    this.dateOfBirth.setValue(date);
+    this.dateOfBirth.setValue(convertToJSDate(this.user.dateOfBirth));
   }
 
   submitChange ()
@@ -81,9 +75,8 @@ export class ProfileComponent
     change.password = this.user.password;
     if (change.dateOfBirth)
     {
-      change.dateOfBirth = `/Date(${Date.parse(change.dateOfBirth)}+0700)/`;
+      change.dateOfBirth = convertJSToCSDate(change.dateOfBirth);
     }
-    console.log(change);
 
     this.httpService.editUser(change).subscribe({
       next: res =>
@@ -103,7 +96,7 @@ export class ProfileComponent
             break;
 
           case 0:
-            this.alertService.appendAlert('Đã xảy ra sự cố với mạng, vui lòng thử lại sau', AlertType.danger, 5, 'alert-container');
+            this.alertService.appendAlert('Không thể kết nối với máy chủ, vui lòng thử lại sau', AlertType.danger, 5, 'alert-container');
             break;
 
           default:
@@ -138,7 +131,7 @@ export class ProfileComponent
             break;
 
           case 0:
-            this.alertService.appendAlert('Đã xảy ra sự cố với mạng, vui lòng thử lại sau', AlertType.danger, 5, 'alert-container');
+            this.alertService.appendAlert('Không thể kết nối với máy chủ, vui lòng thử lại sau', AlertType.danger, 5, 'alert-container');
             break;
 
           default:

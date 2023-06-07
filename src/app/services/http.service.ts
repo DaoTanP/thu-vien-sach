@@ -2,14 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
+import { SearchModel } from '../models/search-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService
 {
-  private BOOK_API_URL = 'https://express-api.dao-tan-phattan.repl.co/books';
+  // private BOOK_API_URL = 'https://express-api.dao-tan-phattan.repl.co/books';
   // private USER_API_URL = 'https://express-api.dao-tan-phattan.repl.co/authentication';
+  private BOOK_API_URL = 'https://localhost:44389/api/book';
   private USER_API_URL = 'https://localhost:44389/api/user';
 
   constructor(private httpClient: HttpClient) { }
@@ -57,8 +59,32 @@ export class HttpService
     return this.httpClient.get(this.BOOK_API_URL);
   }
 
-  public searchBooks (keyword: string): Observable<any>
+  public getBookCategories (): Observable<any>
   {
-    return this.httpClient.get(this.BOOK_API_URL + '/search?q=' + keyword);
+    return this.httpClient.get(this.BOOK_API_URL + '/category');
+  }
+
+  public getAuthors (): Observable<any>
+  {
+    return this.httpClient.get(this.BOOK_API_URL + '/author');
+  }
+
+  public getPublishers (): Observable<any>
+  {
+    return this.httpClient.get(this.BOOK_API_URL + '/publisher');
+  }
+
+  public searchBooks (searchModel: SearchModel): Observable<any>
+  {
+    for (let i in searchModel)
+    {
+      if (searchModel[i] === null)
+        searchModel[i] = '';
+    }
+
+    console.log(searchModel);
+
+
+    return this.httpClient.get(this.BOOK_API_URL + '/search', { params: searchModel });
   }
 }
