@@ -13,3 +13,7 @@ a.h4 .bi {
 a.h4:hover .bi {
     margin-left: 0.5rem;
 }
+
+.slick-track {
+    margin-left: 0;
+}

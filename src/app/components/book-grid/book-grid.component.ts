@@ -50,7 +50,7 @@ export default class BookGridComponent implements OnInit
 
     if (changes["currentPage"])
     {
-      console.log("change current page: ", changes["currentPage"].previousValue, changes["currentPage"].currentValue);
+      // console.log("change current page: ", changes["currentPage"].previousValue, changes["currentPage"].currentValue);
       this.current = this.currentPage <= this.total ? this.currentPage : this.total;
       this.recalculate();
     }
@@ -74,7 +74,7 @@ export default class BookGridComponent implements OnInit
     this.itemsToDisplay = this.paginate(this.current, this.perPage);
     this.pages = this.getPages(this.current, this.total);
     this.onChangePage.emit({ totalPages: this.total, currentPage: this.current, itemsPerPage: this.perPage, itemsOnDisplay: this.itemsToDisplay.length, totalItems: this.items.length });
-    console.log({ totalPages: this.total, currentPage: this.current, itemsPerPage: this.perPage, itemsOnDisplay: this.itemsToDisplay.length, totalItems: this.items.length });
+    // console.log({ totalPages: this.total, currentPage: this.current, itemsPerPage: this.perPage, itemsOnDisplay: this.itemsToDisplay.length, totalItems: this.items.length });
   }
   private getPages (current: number, total: number): number[]
   {

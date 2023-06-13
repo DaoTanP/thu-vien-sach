@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Book } from 'src/app/models/book';
@@ -34,23 +34,33 @@ export class BookSearchComponent
     publishedTo: new FormControl(null),
   });
 
+  protected sortForm: FormGroup = new FormGroup({
+    sortBy: new FormControl(null),
+    sortAscending: new FormControl(true),
+  });
+
   constructor(private httpService: HttpService, private router: Router, private route: ActivatedRoute)
   {
+    this.categories = httpService.getBookCategories();
+
     // this.route.queryParams
     this.route.queryParamMap.subscribe(params =>
     {
-      this.pageNumber = Number.parseInt(params.get('p') || '');
+      this.pageNumber = Number.parseInt(params.get('page') || '');
+      this.displayStyleHorizontal = params.get('displayStyle') === 'horizontal' ? true : false;
+      this.sortForm.setValue({ sortBy: params.get('sortBy') || 'title', sortAscending: params.get('sortOrder') === 'asc' ? true : false });
+
       let hasParams = false;
       let changed = false;
-      hasParams = Object.keys(params).some(param => param !== 'p');
+      hasParams = Object.keys(params).some(param => (param !== 'page' && param !== 'sortBy' && param !== 'sortOrder' && param !== 'displayStyle'));
       if (!hasParams)
       {
-        this.bookListAsync = this.httpService.searchBooks(this.searchModel);
-        this.getList();
+        this.bookListAsync = this.httpService.getBooks();
+        this.getList(this.sortForm.value.sortBy, this.sortForm.value.sortAscending);
         return;
       }
 
-      const sm = new SearchModel(params.get('q'), params.getAll('c'), params.get('a'), params.get('pub'), params.get('pf'), params.get('pt'));
+      const sm = new SearchModel(params.get('title'), params.getAll('category'), params.get('author'), params.get('publisher'), params.get('publishedFrom'), params.get('publishedTo'));
       for (const key in sm)
       {
         if (this.searchModel[key] !== sm[key])
@@ -62,50 +72,112 @@ export class BookSearchComponent
 
       if (changed)
       {
-        this.bookListAsync = this.httpService.searchBooks({ ...this.searchModel });
-        this.getList();
+        this.bookListAsync = this.httpService.searchBooks(this.searchModel);
+        this.getList(this.sortForm.value.sortBy, this.sortForm.value.sortAscending);
       }
+
+      const selectedCategories = (this.searchForm.get('categories') as FormArray);
+      const paramCategories = params.getAll('category');
+
+      paramCategories.forEach(c => (c && selectedCategories.value.indexOf(c) < 0) ? selectedCategories.push(new FormControl(c)) : undefined);
+
     });
 
     const { category, ...formValue } = this.searchModel;
     this.searchForm.patchValue(formValue);
-
-    this.categories = httpService.getBookCategories();
   }
 
-  reset ()
-  {
-    this.router.navigate(['/search']);
-  }
-
-  getList ()
+  getList (sortBy: string = '', sortAscending: boolean = false)
   {
     this.bookListAsync.subscribe(books =>
     {
-      this.bookList = books.map((book: any) => new Book(book.id, book.title, book.category.name, book.image, book.author.name, book.publisher.name, book.publishDate, book.overview, book.numberOfPages));
+      const data = books.map((book: any) => new Book(book.id, book.title, book.category.name, book.image, book.author.name, book.publisher.name, book.publishDate, book.overview, book.numberOfPages));
+      this.bookList = this.sortData(data, sortBy, sortAscending);
 
       this.totalItems = books.length;
       this.resetPaginationInfo();
     });
   }
 
+  reset ()
+  {
+    const queryParams = {
+      title: null,
+      category: null,
+      author: null,
+      publisher: null,
+      publishedFrom: null,
+      publishedTo: null,
+      page: 1,
+    }
+    const selectedCategories = (this.searchForm.get('categories') as FormArray);
+    selectedCategories.clear();
+    this.router.navigate(['/search'], { queryParams: queryParams, queryParamsHandling: 'merge' });
+  }
+
   search ()
   {
     let query = this.searchForm.value;
 
-    console.log(query.categories);
+    // console.log(query.categories);
 
     const queryParams = {
-      q: query.bookTitle,
-      c: query.categories,
-      a: query.author,
-      pub: query.publisher,
-      pf: query.publishedFrom,
-      pt: query.publishedTo,
-      p: 1,
+      title: query.bookTitle,
+      category: query.categories,
+      author: query.author,
+      publisher: query.publisher,
+      publishedFrom: query.publishedFrom,
+      publishedTo: query.publishedTo,
+      page: 1,
     }
 
-    this.router.navigate(['/search'], { queryParams: queryParams });
+    this.router.navigate(['/search'], { queryParams: queryParams, queryParamsHandling: 'merge' });
+  }
+
+  changeDisplayStyle ()
+  {
+    this.router.navigate(['/search'], { queryParams: { displayStyle: this.displayStyleHorizontal ? 'vertical' : 'horizontal' }, queryParamsHandling: 'merge' });
+  }
+
+  sort (by: string, ascending: boolean = false)
+  {
+    this.router.navigate(['/search'], { queryParams: { sortBy: by, sortOrder: ascending ? 'asc' : 'desc' }, queryParamsHandling: 'merge' });
+  }
+
+  sortData (bookList: Book[], by: string, ascending: boolean = false)
+  {
+    switch (by)
+    {
+      case 'title':
+        if (ascending)
+          return bookList.sort((a, b) => a.title.localeCompare(b.title));
+        else
+          return bookList.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+
+      case 'publishedDate':
+        if (ascending)
+          return bookList.sort((a, b) =>
+          {
+            if (!a.publishDate || !b.publishDate) return 1;
+            const d1 = a.publishDate.split('/').reverse().join('');
+            const d2 = b.publishDate.split('/').reverse().join('');
+            return d1.localeCompare(d2);
+          });
+        else
+          return bookList.sort((a, b) =>
+          {
+            if (!a.publishDate || !b.publishDate) return 1;
+            const d1 = a.publishDate.split('/').reverse().join('');
+            const d2 = b.publishDate.split('/').reverse().join('');
+            return d2.localeCompare(d1);
+          });
+        break;
+
+      default:
+        return bookList;
+        break;
+    }
   }
 
   onCategoryCheckboxChange (event: any)
@@ -123,7 +195,7 @@ export class BookSearchComponent
 
   onChangePage (e: any)
   {
-    this.router.navigate(['/search'], { queryParams: { p: e.currentPage }, queryParamsHandling: 'merge' })
+    this.router.navigate(['/search'], { queryParams: { page: e.currentPage }, queryParamsHandling: 'merge' });
   }
 
   getPaginationInfo (e: any)
@@ -140,7 +212,7 @@ export class BookSearchComponent
     if (this.pageNumber && this.pageNumber > e.totalPages)
     {
       this.pageNumber = e.totalPages;
-      this.router.navigate(['/search'], { queryParams: { p: this.pageNumber }, queryParamsHandling: 'merge' })
+      this.router.navigate(['/search'], { queryParams: { page: this.pageNumber }, queryParamsHandling: 'merge' })
     }
   }
 

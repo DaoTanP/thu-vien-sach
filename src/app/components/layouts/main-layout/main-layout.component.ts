@@ -1,5 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { User } from 'src/app/models/user';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { DataService } from 'src/app/services/data.service';
 
@@ -15,7 +17,7 @@ export class MainLayoutComponent
   protected getThemeFunction: any = undefined;
   protected isDark: boolean = false;
   protected isScrolled: boolean = false;
-  protected user: any;
+  protected user: Observable<User | undefined> = of(undefined);
 
   get isLoggedIn () { return this.authGuardService.isLoggedIn };
 
@@ -26,12 +28,7 @@ export class MainLayoutComponent
     this.getThemeFunction = this.dataService.getData('getTheme');
     this.isDark = this.getTheme();
 
-    const sessionData = this.dataService.getSession('user');
-    if (typeof sessionData === 'string')
-    {
-      this.user = JSON.parse(sessionData);
-      console.log(this.user);
-    }
+    this.user = authGuardService.userData;
   }
 
   toggleTheme ()
@@ -59,9 +56,7 @@ export class MainLayoutComponent
 
   logOut ()
   {
-    this.dataService.removeSession('user');
-    this.user = undefined;
-
+    this.authGuardService.logOut();
     let navigateAfterLogOut = this.dataService.getData('navigateAfterLogOut');
 
     if (navigateAfterLogOut)

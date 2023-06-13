@@ -11,4 +11,14 @@ export class BookComponent
   @Input() book: Book = new Book();
   @Input() href: string | undefined = undefined;
   @Input() isHorizontal: boolean = false;
+
+  imageLoad (e: any)
+  {
+    e.target.classList.remove("placeholder");
+  }
+
+  imageError (e: any)
+  {
+    e.target.src = 'https://dummyimage.com/100x150/ddd/aaa&text=No+image';
+  }
 }

@@ -31,6 +31,13 @@ export class HttpService
     return this.httpClient.post(this.USER_API_URL, user);
   }
 
+  public getUserData (id: string): Observable<any>
+  {
+    console.log('requesting user data');
+
+    return this.httpClient.get(this.USER_API_URL + '/' + id);
+  }
+
   public editUser (user: any): Observable<any>
   {
     return this.httpClient.put(this.USER_API_URL, user);
@@ -82,9 +89,26 @@ export class HttpService
         searchModel[i] = '';
     }
 
-    console.log(searchModel);
-
-
     return this.httpClient.get(this.BOOK_API_URL + '/search', { params: searchModel });
+  }
+
+  public addFavorite ({ bookId, userId }: any): Observable<any>
+  {
+    const id = null;
+    return this.httpClient.post(this.USER_API_URL + '/addFavorite', { id, bookId, userId });
+  }
+  public removeFavorite ({ bookId, userId }: any): Observable<any>
+  {
+    const id = null;
+    return this.httpClient.post(this.USER_API_URL + '/removeFavorite', { id, bookId, userId });
+  }
+  public isFavorite ({ bookId, userId }: any): Observable<any>
+  {
+    const id = null;
+    return this.httpClient.post(this.USER_API_URL + '/isFavorite', { id, bookId, userId });
+  }
+  public getFavorite (id: string): Observable<any>
+  {
+    return this.httpClient.get(this.USER_API_URL + `/${id}/favorite`);
   }
 }

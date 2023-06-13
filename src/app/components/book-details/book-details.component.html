@@ -1,24 +1,32 @@
+<div id="alert-container" class="container"> <!--class="position-fixed z-3 w-100 px-5" style="top: 4rem;" -->
+    <style>
+        .alert-container>* {
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        }
+    </style>
+</div>
+
 <div class="container mb-5 mt-3">
     <div class="row">
-        <div class="col-md-4 mb-4 px-md-0">
-            <div class="img-container mx-5 mx-md-3 mx-lg-5 px-5 px-md-0 px-lg-3 px-xl-4 px-xxl-5 mb-3">
-                <img class="img-fluid w-100 rounded-2 shadow-lg" src="{{book.image}}" alt="">
+        <div class="col-md-4 mb-5 mb-md-0">
+            <div class="img-container mx-auto mx-xl-5">
+                <img class="img-fluid w-100 rounded-2 book-cover-shadow" src="{{book.image}}" alt="">
             </div>
         </div>
         <div class="col-md">
             <h2 class="mb-3">{{book.title}}</h2>
-            <hr class="mb-4">
+            <div class="mb-4"></div>
             <div class="row">
                 <div class="col-md-4 col">
                     <p>Tác giả:</p>
                     <p>Nhà xuất bản:</p>
-                    <p>Năm xuất bản:</p>
+                    <p>Ngày xuất bản:</p>
                     <p>Số trang:</p>
                 </div>
                 <div class="col">
                     <p>{{book.author}}</p>
                     <p>{{book.publisher}}</p>
-                    <p>{{book.publishDate}}</p>
+                    <p>{{book.publishDate || 'Không rõ'}}</p>
                     <p>{{book.numberOfPages}}</p>
                 </div>
             </div>
@@ -27,8 +35,21 @@
                     <button class="btn btn-primary fw-medium btn-block px-4 w-100" type="submit">Đăng ký mượn</button>
                 </div>
                 <div class="col-12 col-md-auto">
-                    <button class="btn text-primary fw-medium w-100 mt-3 mt-md-0"><span
-                            class="bi bi-bookmark-plus"></span> Thêm vào yêu thích</button>
+                    <button *ngIf="!isFavorite" [disabled]="waitingForFavoriteAction"
+                        class="btn text-primary fw-medium w-100 mt-3 mt-md-0" (click)="addFavorite()">
+                        <span *ngIf="waitingForFavoriteAction" class="spinner-border spinner-border-sm text-primary"
+                            role="status" aria-hidden="true"></span>
+                        <span *ngIf="!waitingForFavoriteAction" class="bi bi-bookmark-plus"></span>
+                        Thêm vào yêu thích
+                    </button>
+
+                    <button *ngIf="isFavorite" [disabled]="waitingForFavoriteAction"
+                        class="btn text-primary fw-medium w-100 mt-3 mt-md-0" (click)="removeFavorite()">
+                        <span *ngIf="waitingForFavoriteAction" class="spinner-border spinner-border-sm text-primary"
+                            role="status" aria-hidden="true"></span>
+                        <span *ngIf="!waitingForFavoriteAction" class="bi bi-bookmark-check-fill"></span>
+                        Xóa khỏi yêu thích
+                    </button>
                 </div>
             </form>
         </div>
@@ -38,8 +59,8 @@
     <div class="row mb-4">
         <h4 class="mb-0">Giới thiệu</h4>
     </div>
-    <p>{{book.overview}}</p>
+    <p class="p-2" style="text-align: justify;">{{book.overview}}</p>
 </div>
-<app-book-scroll-list title="Cùng tác giả" [data]="fromAuthor"></app-book-scroll-list>
-<app-book-scroll-list title="Có liên quan" [data]="inCategory"></app-book-scroll-list>
-<app-book-scroll-list [title]="'Từ nhà xuất bản '+book.publisher" [data]="fromPublisher"></app-book-scroll-list>
+<app-book-scroll-list title="Cùng tác giả" [dataAsync]="fromAuthor"></app-book-scroll-list>
+<app-book-scroll-list title="Có liên quan" [dataAsync]="inCategory"></app-book-scroll-list>
+<app-book-scroll-list [title]="'Từ nhà xuất bản '+book.publisher" [dataAsync]="fromPublisher"></app-book-scroll-list>

@@ -5,7 +5,6 @@ import { Observable, map, of } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { AlertService, AlertType } from 'src/app/services/alert.service';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
-import { DataService } from 'src/app/services/data.service';
 import { HttpService } from 'src/app/services/http.service';
 
 @Component({
@@ -31,7 +30,7 @@ export class RegisterComponent
     agreement: this.agreement
   }, [this.formGroupMatchValidator('confirmPassword', 'password')]);
 
-  constructor(private httpService: HttpService, private dataService: DataService, private authGuardService: AuthGuardService, private router: Router, private alertService: AlertService)
+  constructor(private httpService: HttpService, private authGuardService: AuthGuardService, private router: Router, private alertService: AlertService)
   {
     if (authGuardService.isLoggedIn)
       router.navigate(['home']);
@@ -89,9 +88,8 @@ export class RegisterComponent
       next: (res) =>
       {
         this.waiting = false;
-        this.dataService.setSession('user', JSON.stringify(res));
+        this.authGuardService.login(res.id);
         this.router.navigate(['home']);
-        // console.log(res);
       }, error: (err) =>
       {
         this.waiting = false;

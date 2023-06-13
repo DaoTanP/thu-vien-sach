@@ -16,17 +16,18 @@
 
 <div class="container mb-5">
   <div class="row">
-    <div class="col-12 col-md-auto">
+    <div class="col-12 col-md-auto me-lg-3">
       <div class="position-relative">
         <img src="{{user.avatarImage}}" alt="avatar"
           class="m-auto mb-2 m-lg-0 d-block rounded-circle img-fluid border border-5 border-light-subtle shadow-sm avatar">
         <label for="avatarUpload"
-          class="position-absolute bottom-0 end-0 btn bg-body-secondary rounded-circle py-2 border-2 border-secondary-subtle focus-ring focus-ring-primary">
+          class="position-absolute bottom-0 start-50 btn bg-body-secondary rounded-circle py-2 border-2 border-secondary-subtle focus-ring focus-ring-primary"
+          style="transform: translateX(75%);">
           <span class="bi bi-camera-fill"></span>
           <input id="avatarUpload" type="file" class="visually-hidden" (change)="uploadAvatar($event)">
         </label>
       </div>
-      <p class="h4 text-center mb-2">{{user.lastName || '' + " " + user.firstName}}</p>
+      <p class="h4 text-center mb-2">{{(user.lastName || '') + " " + user.firstName}}</p>
       <button class="btn btn-primary mb-2 py-1 d-block w-100" data-bs-toggle="modal" data-bs-target="#infoModal">Chỉnh
         sửa thông tin</button>
       <button class="btn btn-outline-danger py-1 mb-2 d-block w-100" data-bs-toggle="modal"
@@ -65,7 +66,7 @@
             </div>
             <div class="row justify-content-center align-items-center g-2">
               <div class="col-3">Giới tính</div>
-              <div class="col">{{user.gender !== null ? (this.gender ? 'Nam' : 'Nữ') : ''}}</div>
+              <div class="col">{{user.gender !== null ? (user.gender ? 'Nam' : 'Nữ') : ''}}</div>
             </div>
             <div class="row justify-content-center align-items-center g-2">
               <div class="col-3">Ngày sinh</div>
@@ -118,7 +119,7 @@
           </div>
         </div>
         <div class="tab-pane py-3" id="favorite" role="tabpanel" aria-labelledby="favorite-tab">
-          <app-book-grid [data]="favorites"></app-book-grid>
+          <app-book-grid *ngIf="!waiting" [data]="favorites"></app-book-grid>
         </div>
         <div class="tab-pane py-3" id="history" role="tabpanel" aria-labelledby="history-tab">Lorem ipsum dolor sit
           amet
@@ -209,7 +210,7 @@
       <div class="modal-body">
         <div class="col mb-3 w-100">
           <label for="passwordEdit" class="form-label">Nhập mật khẩu để xác thực</label>
-          <input type="password" [(ngModel)]="user.password" id="passwordEdit" class="form-control"
+          <input type="password" [(ngModel)]="userToEdit.password" id="passwordEdit" class="form-control"
             aria-describedby="helpPasswordId">
         </div>
       </div>
@@ -231,7 +232,7 @@
       <div class="modal-body">
         <div class="col mb-3 w-100">
           <label for="passwordDelete" class="form-label">Nhập mật khẩu để xác thực</label>
-          <input type="password" [(ngModel)]="user.password" id="passwordDelete" class="form-control"
+          <input type="password" [(ngModel)]="userToEdit.password" id="passwordDelete" class="form-control"
             aria-describedby="helpPasswordId">
         </div>
       </div>

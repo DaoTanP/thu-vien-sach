@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { convertJSToCSDate, convertToJSDate } from 'src/app/models/Utils';
+import { map } from 'rxjs';
+import { convertCSToReadableDate, convertJSToCSDate, convertToJSDate } from 'src/app/models/Utils';
 import { Book } from 'src/app/models/book';
 import { User } from 'src/app/models/user';
 import { AlertService, AlertType } from 'src/app/services/alert.service';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { DataService } from 'src/app/services/data.service';
 import { HttpService } from 'src/app/services/http.service';
 
@@ -19,6 +21,7 @@ export class ProfileComponent
   protected user: User = new User();
   protected userToEdit: User = new User();
   protected favorites: Book[] = [];
+  protected favoriteAsync: any;
 
   protected firstName: FormControl = new FormControl(null, [Validators.required]);
   protected lastName: FormControl = new FormControl(null);
@@ -38,28 +41,49 @@ export class ProfileComponent
     address: this.address,
   });
 
-  constructor(private dataService: DataService, private httpService: HttpService, private alertService: AlertService, private router: Router)
+  constructor(private dataService: DataService, private authGuard: AuthGuardService, private httpService: HttpService, private alertService: AlertService, private router: Router)
   {
-    const sessionData = this.dataService.getSession('user');
-    if (!sessionData || typeof sessionData !== 'string')
-      return;
-    this.user.value = JSON.parse(sessionData);
+    if (!authGuard.isLoggedIn)
+      router.navigate(['/login']);
+
+    this.setData();
+
     this.dataService.setData("navigateAfterLogOut", this.logOut);
-    this.favorites = this.user.favoriteBooks.map((object: any) =>
+  }
+
+  setData ()
+  {
+    this.waiting = true;
+    this.authGuard.userData.subscribe(data =>
     {
-      const book = object.book;
-      return new Book(book.id, book.title,
-        book.category.name, book.image,
-        book.author.name, book.publisher.name,
-        book.publishDate, book.overview, book.numberOfPages);
-    })
+      this.user.value = data;
+      this.userToEdit.value = data;
 
-    this.userToEdit.value = this.user;
-    const { id, username, password, avatarImage, favoriteBooks, cardNumber, cardPassword, ...userInfo } = this.userToEdit;
+      const { id, username, password, avatarImage, favoriteBooks, cardNumber, cardPassword, ...userInfo } = data;
+      this.editInfoForm.setValue({ ...userInfo });
+      this.dateOfBirth.setValue(convertToJSDate(convertCSToReadableDate(data.dateOfBirth)));
 
-    this.editInfoForm.setValue({ ...userInfo });
+      this.getFavorite();
+      this.waiting = false;
+    });
+  }
 
-    this.dateOfBirth.setValue(convertToJSDate(this.user.dateOfBirth));
+  getFavorite ()
+  {
+    // this.user.favoriteBooks.forEach((b: any) =>
+    // {
+    //   this.httpService.getBooks(b.bookId).subscribe((book: any) =>
+    //   {
+    //     this.favorites.push(new Book(book.id, book.title,
+    //       book.category.name, book.image,
+    //       book.author.name, book.publisher.name,
+    //       book.publishDate, book.overview, book.numberOfPages));
+    //   }
+    //   );
+    // });
+    this.waiting = true;
+    this.favoriteAsync = this.httpService.getFavorite(this.user.id).pipe(map((books: Book[]) => books.map((book: any) => new Book(book.id, book.title, book.category.name, book.image, book.author.name, book.publisher.name, book.publishDate, book.overview, book.numberOfPages))));
+    this.favoriteAsync.subscribe((books: any) => this.favorites = books);
   }
 
   submitChange ()
@@ -70,24 +94,22 @@ export class ProfileComponent
   change ()
   {
     this.waiting = true;
-    const { id, avatarImage, favoriteBooks, cardNumber, cardPassword, ...userInfo } = this.userToEdit;
-    let change = { ...this.user, ...userInfo };
-    change.password = this.user.password;
-    if (change.dateOfBirth)
+    if (this.userToEdit.dateOfBirth)
     {
-      change.dateOfBirth = convertJSToCSDate(change.dateOfBirth);
+      this.userToEdit.dateOfBirth = convertJSToCSDate(this.userToEdit.dateOfBirth);
     }
 
-    this.httpService.editUser(change).subscribe({
+    this.httpService.editUser(this.userToEdit).subscribe({
       next: res =>
       {
         this.waiting = false;
-        this.dataService.setSession('user', JSON.stringify(res));
-        this.user.value = res;
+        this.setData();
+        this.userToEdit.password = '';
         this.alertService.appendAlert('Cập nhật thông tin thành công', AlertType.success, 5, 'alert-container');
       }, error: err =>
       {
         this.waiting = false;
+        this.userToEdit.password = '';
         switch (err.status)
         {
           case 400:
@@ -110,16 +132,17 @@ export class ProfileComponent
   delete ()
   {
     this.waiting = true;
-    this.httpService.deleteUser(this.user).subscribe({
+    this.httpService.deleteUser(this.userToEdit).subscribe({
       next: res =>
       {
         this.waiting = false;
-        this.dataService.removeSession('user');
+        this.authGuard.logOut();
         this.logOut(this.router);
         this.alertService.appendAlert('Xóa tài khoản thành công', AlertType.success, 5, 'alert-container');
       }, error: err =>
       {
         this.waiting = false;
+        this.userToEdit.password = '';
         switch (err.status)
         {
           case 404:
@@ -164,7 +187,8 @@ export class ProfileComponent
         {
           this.waiting = false;
           this.user.avatarImage = res;
-          this.dataService.setSession('user', JSON.stringify(this.user));
+          // this.authGuard.userData = this.user;
+          this.alertService.appendAlert('Đổi ảnh đại diện thành công, tải lại trang để xem thay đổi', AlertType.success, 5, 'alert-container');
         },
         error: err =>
         {
