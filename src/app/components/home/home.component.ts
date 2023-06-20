@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-home',
@@ -9,8 +11,14 @@ import { Router } from '@angular/router';
 export class HomeComponent
 {
   protected searchInput: string = '';
+  protected topBorrowList: Observable<any> = of([]);
+  protected randomRecommendationList: Observable<any> = of([]);
 
-  constructor(private router: Router) { }
+  constructor(private httpService: HttpService, private router: Router)
+  {
+    this.topBorrowList = this.httpService.getTopBorrow();
+    this.randomRecommendationList = this.httpService.GetRandomRecommendation();
+  }
 
   search ()
   {

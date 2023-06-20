@@ -66,7 +66,17 @@ export class HttpService
     return this.httpClient.get(this.BOOK_API_URL);
   }
 
-  public getBookCategories (): Observable<any>
+  public getTopBorrow (): Observable<any>
+  {
+    return this.httpClient.get(this.BOOK_API_URL + '/topBorrow');
+  }
+
+  public GetRandomRecommendation (): Observable<any>
+  {
+    return this.httpClient.get(this.BOOK_API_URL + '/randomRecommendation');
+  }
+
+  public getCategories (): Observable<any>
   {
     return this.httpClient.get(this.BOOK_API_URL + '/category');
   }

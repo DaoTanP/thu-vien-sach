@@ -41,7 +41,7 @@ export class BookSearchComponent
 
   constructor(private httpService: HttpService, private router: Router, private route: ActivatedRoute)
   {
-    this.categories = httpService.getBookCategories();
+    this.categories = httpService.getCategories();
 
     // this.route.queryParams
     this.route.queryParamMap.subscribe(params =>
