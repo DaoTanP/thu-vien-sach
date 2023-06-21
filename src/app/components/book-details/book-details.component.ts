@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { FormControl, Validators, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
+import { convertToJSDate } from 'src/app/models/Utils';
 import { Book } from 'src/app/models/book';
 import { SearchModel } from 'src/app/models/search-model';
 import { AlertService, AlertType } from 'src/app/services/alert.service';
@@ -14,17 +16,28 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class BookDetailsComponent
 {
-  private userId: string | undefined = undefined;
+  protected userId: string | undefined = undefined;
+  protected cardNumber: string | undefined = undefined;
   protected book: Book = new Book();
   protected isFavorite: boolean = false;
   protected waitingForFavoriteAction = false;
+  protected waitingForBorrowAction = false;
 
   protected inCategory: Observable<Book[]> = of([]);
   protected fromAuthor: Observable<Book[]> = of([]);
   protected fromPublisher: Observable<Book[]> = of([]);
 
+  protected borrowDate: FormControl = new FormControl(null, [Validators.required]);
+  protected returnDate: FormControl = new FormControl(null, [Validators.required]);
+
+  protected borrowForm: FormGroup = new FormGroup({
+    borrowDate: this.borrowDate,
+    returnDate: this.returnDate,
+  });
+
   constructor(private httpService: HttpService, private authGuardService: AuthGuardService, private route: ActivatedRoute, private router: Router, private alertService: AlertService)
   {
+    console.log((new Date()).toString());
     this.waitingForFavoriteAction = true;
     this.route.paramMap.subscribe(params =>
     {
@@ -46,6 +59,7 @@ export class BookDetailsComponent
             {
               httpService.isFavorite({ bookId: this.book.id, userId: res.id }).subscribe(fav => this.isFavorite = fav);
               this.userId = res.id;
+              this.cardNumber = res.cardNumber;
             }
           });
 
@@ -64,13 +78,13 @@ export class BookDetailsComponent
 
   addFavorite ()
   {
-    this.waitingForFavoriteAction = true;
     if (!this.userId)
     {
       this.router.navigate(['/login']);
       return;
     }
 
+    this.waitingForFavoriteAction = true;
     this.httpService.addFavorite({ bookId: this.book.id, userId: this.userId }).subscribe({
       next: res =>
       {
@@ -86,13 +100,13 @@ export class BookDetailsComponent
 
   removeFavorite ()
   {
-    this.waitingForFavoriteAction = true;
     if (!this.userId)
     {
       this.router.navigate(['/login']);
       return;
     }
 
+    this.waitingForFavoriteAction = true;
     this.httpService.removeFavorite({ bookId: this.book.id, userId: this.userId }).subscribe({
       next: res =>
       {
@@ -101,6 +115,43 @@ export class BookDetailsComponent
       }, error: err =>
       {
         this.waitingForFavoriteAction = false;
+        this.alertService.appendAlert('Đã xảy ra lỗi, vui lòng thử lại sau', AlertType.danger, 5, 'alert-container');
+      }
+    });
+  }
+
+  borrowEvent ()
+  {
+    if (!this.userId)
+    {
+      this.router.navigate(['/login']);
+      return;
+    }
+    if (!this.cardNumber)
+    {
+      this.alertService.appendAlert('Vui lòng liên kết thẻ thư viện trước khi mượn sách', AlertType.danger, 10, 'alert-container');
+      return;
+    }
+  }
+
+  borrow ()
+  {
+    this.waitingForBorrowAction = true;
+    const formData = this.borrowForm.value;
+    const data = {
+      cardNumber: this.cardNumber,
+      bookId: this.book.id,
+      borrowDate: formData.borrowDate,
+      returnDate: formData.returnDate
+    }
+    this.httpService.borrow(data).subscribe({
+      next: res =>
+      {
+        this.waitingForBorrowAction = false;
+        this.alertService.appendAlert('Đăng ký mượn thành công, mang thẻ đến thư viện để nhận sách', AlertType.success, 10, 'alert-container');
+      }, error: err =>
+      {
+        this.waitingForBorrowAction = false;
         this.alertService.appendAlert('Đã xảy ra lỗi, vui lòng thử lại sau', AlertType.danger, 5, 'alert-container');
       }
     });

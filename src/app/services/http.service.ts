@@ -58,6 +58,11 @@ export class HttpService
     return this.httpClient.post(this.USER_API_URL + '/changePassword', { username, oldPassword, newPassword }, { observe: 'response', responseType: "text" });
   }
 
+  public linkLibraryCard ({ CardNumber, Password, UserId }: any): Observable<any>
+  {
+    return this.httpClient.post(this.USER_API_URL + '/libraryCard', { CardNumber, Password, UserId });
+  }
+
   public getBooks (id: string = ''): Observable<any>
   {
     if (id != '')
@@ -120,5 +125,10 @@ export class HttpService
   public getFavorite (id: string): Observable<any>
   {
     return this.httpClient.get(this.USER_API_URL + `/${id}/favorite`);
+  }
+
+  public borrow ({ cardNumber, bookId, borrowDate, returnDate }: any): Observable<any>
+  {
+    return this.httpClient.post(this.BOOK_API_URL + '/borrow', { id: null, cardNumber, bookId, borrowDate, returnDate });
   }
 }

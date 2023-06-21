@@ -25,6 +25,6 @@ export class HomeComponent
     if (!this.searchInput || this.searchInput === '')
       return;
 
-    this.router.navigate(['/search'], { queryParams: { q: this.searchInput } });
+    this.router.navigate(['/search'], { queryParams: { title: this.searchInput } });
   }
 }

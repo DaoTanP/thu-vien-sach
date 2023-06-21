@@ -70,17 +70,6 @@ export class ProfileComponent
 
   getFavorite ()
   {
-    // this.user.favoriteBooks.forEach((b: any) =>
-    // {
-    //   this.httpService.getBooks(b.bookId).subscribe((book: any) =>
-    //   {
-    //     this.favorites.push(new Book(book.id, book.title,
-    //       book.category.name, book.image,
-    //       book.author.name, book.publisher.name,
-    //       book.publishDate, book.overview, book.numberOfPages));
-    //   }
-    //   );
-    // });
     this.waiting = true;
     this.favoriteAsync = this.httpService.getFavorite(this.user.id).pipe(map((books: Book[]) => books.map((book: any) => new Book(book.id, book.title, book.category.name, book.image, book.author.name, book.publisher.name, book.publishDate, book.overview, book.numberOfPages))));
     this.favoriteAsync.subscribe((books: any) => this.favorites = books);
@@ -228,6 +217,49 @@ export class ProfileComponent
       {
         this.waiting = false;
         this.alertService.appendAlert('Thay đổi mật khẩu thành công', AlertType.success, 5, 'alert-container');
+      }, error: err =>
+      {
+        this.waiting = false;
+        switch (err.status)
+        {
+          case 400:
+            this.alertService.appendAlert('Thông tin không hợp lệ, vui lòng kiểm tra lại', AlertType.danger, 5, 'alert-container');
+            break;
+
+          case 0:
+            this.alertService.appendAlert('Không thể kết nối với máy chủ, vui lòng thử lại sau', AlertType.danger, 5, 'alert-container');
+            break;
+
+          default:
+            this.alertService.appendAlert('Đã xảy ra lỗi, vui lòng thử lại sau', AlertType.danger, 5, 'alert-container');
+            break;
+        }
+      }
+    });
+  }
+
+  linkLibraryCard (cardNumber: string, cardPassword: string)
+  {
+    if (!cardNumber || !cardPassword)
+      return;
+
+    const data = {
+      UserId: this.user.id,
+      CardNumber: cardNumber,
+      Password: cardPassword,
+    };
+
+    console.log(data);
+
+
+    this.waiting = true;
+
+    this.httpService.linkLibraryCard(data).subscribe({
+      next: res =>
+      {
+        this.waiting = false;
+        this.user.cardNumber = res;
+        this.alertService.appendAlert('Liên kết thẻ thư viện thành công', AlertType.success, 5, 'alert-container');
       }, error: err =>
       {
         this.waiting = false;

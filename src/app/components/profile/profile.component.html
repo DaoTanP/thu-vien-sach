@@ -45,6 +45,10 @@
             role="tab" aria-controls="password-panel" aria-selected="false">Đổi mật khẩu</button>
         </li>
         <li class="nav-item" role="presentation">
+          <button class="nav-link" id="libraryCard-tab" data-bs-toggle="tab" data-bs-target="#libraryCard-panel"
+            type="button" role="tab" aria-controls="libraryCard" aria-selected="false">Thẻ thư viện</button>
+        </li>
+        <li class="nav-item" role="presentation">
           <button class="nav-link" id="favorite-tab" data-bs-toggle="tab" data-bs-target="#favorite" type="button"
             role="tab" aria-controls="favorite" aria-selected="false">Yêu thích</button>
         </li>
@@ -56,6 +60,10 @@
       <div class="tab-content">
         <div class="tab-pane py-3 active position-relative" id="info" role="tabpanel" aria-labelledby="info-tab">
           <div class="d-flex flex-column gap-3">
+            <div class="row justify-content-center align-items-center g-2">
+              <div class="col-3">Số thẻ thư viện</div>
+              <div class="col">{{user.cardNumber || 'chưa liên kết'}}</div>
+            </div>
             <div class="row justify-content-center align-items-center g-2">
               <div class="col-3">Họ đệm</div>
               <div class="col">{{user.lastName}}</div>
@@ -115,6 +123,25 @@
                 [disabled]="!passwordNew.value || passwordNew.value !== passwordNew2.value"
                 (click)="changePassword(passwordOld.value, passwordNew.value)">Thay đổi mật
                 khẩu</button>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane py-3" id="libraryCard-panel" role="tabpanel" aria-labelledby="libraryCard-tab">
+          <div class="row mb-3">
+            <div class="col-3"><label for="cardNumber" class="form-label ">Nhập số thẻ</label></div>
+            <div class="col"><input type="text" [ngModel] #cardNumber id="cardNumber" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-3"><label for="cardPassword" class="form-label">Nhập mật khẩu thẻ</label></div>
+            <div class="col"><input type="password" [ngModel] #cardPassword id="cardPassword" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-3"></div>
+            <div class="col">
+              <button class="btn btn-primary" [disabled]="!cardNumber.value || !cardPassword.value"
+                (click)="linkLibraryCard(cardNumber.value, cardPassword.value)">Liên kết thẻ thư viện</button>
             </div>
           </div>
         </div>
