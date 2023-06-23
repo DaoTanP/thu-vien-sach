@@ -34,8 +34,13 @@
                 <div class="col-12 col-md-auto">
                     <button *ngIf="!cardNumber || !userId" class="btn btn-primary fw-medium btn-block px-4 w-100"
                         (click)="borrowEvent()">Đăng ký mượn</button>
-                    <button *ngIf="cardNumber" class=" btn btn-primary fw-medium btn-block px-4 w-100"
-                        data-bs-toggle="modal" data-bs-target="#borrowModal">Đăng ký mượn</button>
+                    <button *ngIf="cardNumber" [disabled]="waitingForBorrowAction"
+                        class=" btn btn-primary fw-medium btn-block px-4 w-100" data-bs-toggle="modal"
+                        data-bs-target="#borrowModal">
+                        <span *ngIf="waitingForBorrowAction" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true"></span>
+                        Đăng ký mượn
+                    </button>
                 </div>
                 <div class="col-12 col-md-auto">
                     <button *ngIf="!isFavorite" [disabled]="waitingForFavoriteAction"
@@ -90,9 +95,15 @@
                             <input type="date" id="borrowDate" class="form-control"
                                 [class.is-invalid]="borrowDate.invalid && (borrowDate.dirty || borrowDate.touched)"
                                 formControlName="borrowDate">
+                            <div *ngIf="borrowDate.invalid && (borrowDate.dirty || borrowDate.touched)"
+                                class="text-danger">
+                                <div *ngIf="borrowDate.errors?.['required']">
+                                    <small>Ngày mượn là bắt buộc</small>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-6 mb-3 w-100">
-                            <label for="returnDate" class="form-label">Tên</label>
+                            <label for="returnDate" class="form-label">Ngày trả</label>
                             <input type="date" id="returnDate" class="form-control"
                                 [class.is-invalid]="returnDate.invalid && (returnDate.dirty || returnDate.touched)"
                                 formControlName="returnDate">
@@ -109,7 +120,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Hủy</button>
                 <button type="submit" form="borrowForm" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#infoModal2">Đăng ký mượn</button>
+                    [disabled]="borrowForm.invalid" data-bs-target="#infoModal2">Đăng ký mượn</button>
             </div>
         </div>
     </div>

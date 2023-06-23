@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
-import { convertToJSDate } from 'src/app/models/Utils';
+import { convertJSToCSDate, convertToJSDate } from 'src/app/models/Utils';
 import { Book } from 'src/app/models/book';
 import { SearchModel } from 'src/app/models/search-model';
 import { AlertService, AlertType } from 'src/app/services/alert.service';
@@ -27,7 +27,7 @@ export class BookDetailsComponent
   protected fromAuthor: Observable<Book[]> = of([]);
   protected fromPublisher: Observable<Book[]> = of([]);
 
-  protected borrowDate: FormControl = new FormControl(null, [Validators.required]);
+  protected borrowDate: FormControl = new FormControl(convertToJSDate(new Date().toLocaleDateString()), [Validators.required]);
   protected returnDate: FormControl = new FormControl(null, [Validators.required]);
 
   protected borrowForm: FormGroup = new FormGroup({
@@ -37,7 +37,6 @@ export class BookDetailsComponent
 
   constructor(private httpService: HttpService, private authGuardService: AuthGuardService, private route: ActivatedRoute, private router: Router, private alertService: AlertService)
   {
-    console.log((new Date()).toString());
     this.waitingForFavoriteAction = true;
     this.route.paramMap.subscribe(params =>
     {
@@ -141,8 +140,8 @@ export class BookDetailsComponent
     const data = {
       cardNumber: this.cardNumber,
       bookId: this.book.id,
-      borrowDate: formData.borrowDate,
-      returnDate: formData.returnDate
+      borrowDate: convertJSToCSDate(formData.borrowDate),
+      returnDate: convertJSToCSDate(formData.returnDate)
     }
     this.httpService.borrow(data).subscribe({
       next: res =>
