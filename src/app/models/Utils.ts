@@ -39,3 +39,16 @@ export function convertToJSDate (value: string | null): string | null
     const date = d.reverse().join('-');
     return date;
 }
+
+export function convertToJSDateString (value: Date | null): string | null
+{
+    if (!value)
+        return null;
+
+
+    const d = value.toLocaleDateString().split('/');
+    d[1] = d[1].length < 2 ? d[1].padStart(2, '0') : d[1];
+    d[0] = d[0].length < 2 ? d[0].padStart(2, '0') : d[0];
+    const date = d.reverse().join('-');
+    return date;
+}

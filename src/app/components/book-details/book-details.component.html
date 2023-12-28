@@ -101,8 +101,15 @@
                                     <small>Ngày mượn là bắt buộc</small>
                                 </div>
                             </div>
+                            <div *ngIf="borrowDate.invalid && (borrowDate.dirty || borrowDate.touched)"
+                                class="text-danger">
+                                <div *ngIf="borrowDate.errors?.['required']">
+                                    <small>Ngày mượn là bắt buộc</small>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-6 mb-3 w-100">
+                            <label for="returnDate" class="form-label">Ngày trả</label>
                             <label for="returnDate" class="form-label">Ngày trả</label>
                             <input type="date" id="returnDate" class="form-control"
                                 [class.is-invalid]="returnDate.invalid && (returnDate.dirty || returnDate.touched)"

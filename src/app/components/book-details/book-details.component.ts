@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
-import { convertJSToCSDate, convertToJSDate } from 'src/app/models/Utils';
+import { convertJSToCSDate, convertToJSDateString } from 'src/app/models/Utils';
 import { Book } from 'src/app/models/book';
 import { SearchModel } from 'src/app/models/search-model';
 import { AlertService, AlertType } from 'src/app/services/alert.service';
@@ -27,7 +27,7 @@ export class BookDetailsComponent
   protected fromAuthor: Observable<Book[]> = of([]);
   protected fromPublisher: Observable<Book[]> = of([]);
 
-  protected borrowDate: FormControl = new FormControl(convertToJSDate(new Date().toLocaleDateString()), [Validators.required]);
+  protected borrowDate: FormControl = new FormControl(convertToJSDateString(new Date()), [Validators.required]);
   protected returnDate: FormControl = new FormControl(null, [Validators.required]);
 
   protected borrowForm: FormGroup = new FormGroup({
@@ -143,6 +143,8 @@ export class BookDetailsComponent
       borrowDate: convertJSToCSDate(formData.borrowDate),
       returnDate: convertJSToCSDate(formData.returnDate)
     }
+    console.log(data);
+    
     this.httpService.borrow(data).subscribe({
       next: res =>
       {
